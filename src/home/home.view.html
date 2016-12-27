@@ -1,0 +1,127 @@
+<div layout="row" flex="90" flex-offset="5">
+    <section flex="60">
+        <!-- Content -->
+        <md-card>
+            <md-card-title>
+                <md-card-title-text>
+                    <span class="md-headline"><h1>Seja bem-vindo ao Varrer!</h1></span>
+                    <span class="md-subhead">O seu Gerenciador de Reponsáveis pela limpeza</span>
+                </md-card-title-text>
+            </md-card-title>
+            <md-card-content>
+                Trello é a maneira gratuita, flexível e visual de organizar tudo, com quem quiser. Livre-se das longas trocas de e-mails, planilhas desatualizadas, notas adesivas que não colam mais e software complicado para gestão de projetos. O Trello deixa você visualizar todo o projeto em um só lugar.
+                <div>
+                </div>
+            </md-card-content>
+        </md-card>
+    </section>
+    <section flex="40">
+
+        <!-- LOGIN -->
+        <md-card ng-show="homeVm.isAction('login')">
+            <md-card-title>
+                <md-card-title-text>
+                    <span class="md-headline">Login</span>
+                    <span class="md-subhead">Faça login para usar o gerenciador</span>
+                </md-card-title-text>
+            </md-card-title>
+            <md-card-content layout-align="space-between">
+                <form name="loginForm">
+                    <div layout-gt-sm="row" layout="column">
+
+                        <!-- Login -->
+                        <md-input-container class="md-block">
+                            <label>Usúario</label>
+                            <input type="text" name="login" ng-model="homeVm.login.username" required>
+                        </md-input-container>
+
+                        <!-- Password -->
+                        <md-input-container class="md-block">
+                            <label>Senha</label>
+                            <input type="password" name="password" ng-model="homeVm.login.password" required>
+                        </md-input-container>
+                    </div>
+
+                    <!-- Button -->
+                    <md-card-actions flex="100" layout="row">
+                        <md-button ng-disabled="loginForm.$invalid" ng-click="homeVm.userLogin()" class="md-raised md-accent">
+                            Login
+                        </md-button>
+                    </md-card-actions>
+                </form>
+                <br/>
+                <md-divider></md-divider>
+
+                <!-- SingIn -->
+                <md-card-actions flex="100" layout="row">
+                    <p>Ainda não tem uma conta? <a class="md-primary pointer" ng-click="homeVm.setAction('singin')">Cadastre a sua turma agora!</a></p>
+                </md-card-actions>
+            </md-card-content>
+        </md-card>
+
+        <!-- SIGNIN -->
+        <md-card ng-show="homeVm.isAction('singin')">
+            <form name="signinForm">
+                <md-card-title>
+                    <md-card-title-text>
+                        <span class="md-headline">Cadastre sua turma</span>
+                        <span class="md-subhead">Faça o cadastro da sua turma!</span>
+                    </md-card-title-text>
+                </md-card-title>
+                <md-card-content layout-align="space-between">
+                    <div layout="column">
+
+                        <!-- UserName -->
+                        <md-input-container class="md-block">
+                            <label>Login</label>
+                            <input ng-model="homeVm.signin.username" maxlength="20" ng-maxlength="20" ng-minlength="2" username ng-model-options="{updateOn: 'default blur', debounce: {default: 500, blur: 0}}" name="username" required>
+                            <div ng-messages="signinForm.username.$error">
+                                <div ng-message="required">Este campo é obrigatório.</div>
+                                <div ng-message="minlength, maxlength">O login deve conter de 2 a 20 caracteres.</div>
+                                <div ng-message="username">Esse login já está em uso.</div>
+                            </div>
+                        </md-input-container>
+
+                        <div layout="column" layout-gt-sm="row">
+
+                            <!-- password -->
+                            <md-input-container class="md-block">
+                                <label>Senha</label>
+                                <input type="password" ng-model="homeVm.signin.password" maxlength="20" ng-maxlength="20" ng-minlength="6" name="password" required>
+                                <div ng-messages="signinForm.password.$error">
+                                    <div ng-message="required">Este campo é obrigatório.</div>
+                                    <div ng-message="minlength, maxlength">A senha deve conter de 6 e 20 caracteres.</div>
+                                </div>
+                            </md-input-container>
+
+                            <!-- passwordRepeat -->
+                            <md-input-container class="md-block">
+                                <label>Repita a senha</label>
+                                <input type="password" password-check="homeVm.signin.password" ng-model="homeVm.signin.passwordRepeat" name="passwordRepeat" required>
+                                <div ng-messages="signinForm.passwordRepeat.$error">
+                                    <div ng-message="required">Este campo é obrigatório.</div>
+                                    <div ng-message="passwordCheck">As senhas precisam coincidir.</div>
+                                </div>
+                            </md-input-container>
+                        </div>
+                    </div>
+
+                    <!-- Button -->
+                    <md-card-actions flex="100" layout="row">
+                        <md-button ng-click="homeVm.userCreate(homeVm.signin)" ng-disabled="signinForm.$invalid" class="md-raised md-accent">
+                            Cadastro
+                        </md-button>
+                    </md-card-actions>
+
+                    <br/>
+                    <md-divider></md-divider>
+                    <!-- LogIn -->
+                    <md-card-actions flex="100" layout="row">
+                        <p>Já possuí conta? <a class="md-primary pointer" ng-click="homeVm.setAction('login')">Faça o login!</a></p>
+                    </md-card-actions>
+                </md-card-content>
+            </form>
+        </md-card>
+
+    </section>
+</div>

@@ -1,0 +1,52 @@
+$loadingSpinnerOffset: 187;
+$loadingSpinnerDuration: 1.4s;
+.loading-spinner {
+    animation: rotator $loadingSpinnerDuration linear infinite;
+    .path {
+        stroke-dasharray: $loadingSpinnerOffset;
+        stroke-dashoffset: 0;
+        transform-origin: center;
+        animation: dash $loadingSpinnerDuration ease-in-out infinite, colors ($loadingSpinnerDuration*4) ease-in-out infinite;
+    }
+}
+
+@keyframes rotator {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(270deg);
+    }
+}
+
+@keyframes colors {
+    0% {
+        stroke: #4285F4;
+    }
+    25% {
+        stroke: #DE3E35;
+    }
+    50% {
+        stroke: #F7C223;
+    }
+    75% {
+        stroke: #1B9A59;
+    }
+    100% {
+        stroke: #4285F4;
+    }
+}
+
+@keyframes dash {
+    0% {
+        stroke-dashoffset: $LoadingSpinnerOffset;
+    }
+    50% {
+        stroke-dashoffset: $LoadingSpinnerOffset/4;
+        transform: rotate(135deg);
+    }
+    100% {
+        stroke-dashoffset: $LoadingSpinnerOffset;
+        transform: rotate(450deg);
+    }
+}

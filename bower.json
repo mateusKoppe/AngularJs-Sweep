@@ -1,0 +1,28 @@
+{
+  "name": "angulartest",
+  "authors": [
+    "Koppe <mateus.koppe@gmail.com>"
+  ],
+  "directory": "lib",
+  "description": "Just Bower Tests",
+  "main": "index.html",
+  "keywords": [
+    "123"
+  ],
+  "license": "MIT",
+  "homepage": "index.html",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "^1.6.0",
+    "angular-route": "^1.6.0",
+    "bootstrap": "^3.3.7",
+    "jquery": "^3.1.1",
+    "angular-material": "^1.1.1"
+  }
+}
