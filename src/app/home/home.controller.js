@@ -5,10 +5,10 @@
         .module('app')
         .controller('homeController', homeController);
 
-    homeController.$inject = ['$scope','userAPI'];
+    homeController.$inject = ['$scope','userService'];
 
     /* @ngInject */
-    function homeController($scope ,userAPI){
+    function homeController($scope ,userService){
         var vm = this;            
         
         //Variables
@@ -41,7 +41,7 @@
         }
         
         function userCreate(){
-            userAPI.create(vm.signin).then(function(result){
+            userService.create(vm.signin).then(function(result){
                 vm.signin = {};
                 $scope.signinForm.$setUntouched();
                 vm.userAction = 'login';
@@ -50,7 +50,7 @@
         }
         
         function userLogin(){
-            userAPI.login(vm.login).then(function(result){
+            userService.login(vm.login).then(function(result){
                 vm.login = {};
                 console.log(result.data);
             });

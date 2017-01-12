@@ -4,3 +4,7 @@
 /bower_components/
 /node_modules/
 /src/libraries/
+/app/scss/.sass-cache/
+/app/components/
+/src/app/scss/.sass-cache/
+/src/app/libraries/

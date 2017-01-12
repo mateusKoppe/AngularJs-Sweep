@@ -1,3 +1,4 @@
+<div class="inset"></div>
 <div layout="row" flex="90" flex-offset="5">
     <section flex="60">
         <!-- Content -->
@@ -61,7 +62,8 @@
 
         <!-- SIGNIN -->
         <md-card ng-show="homeVm.isAction('singin')">
-            <form name="signinForm">
+           <loading-spinner></loading-spinner>
+            <form name="signinForm" style="opacity: 0">
                 <md-card-title>
                     <md-card-title-text>
                         <span class="md-headline">Cadastre sua turma</span>

@@ -2,21 +2,17 @@
     'use strict';
     angular
         .module('app')
-        .factory('userAPI', userAPI);
+        .service('userService', userService);
 
-    userAPI.$inject = ['$http','variables'];
+    userService.$inject = ['$http','variables'];
 
-    var fileApi = "user.php";
-    
-    function userAPI($http, variables){
-        var exports = {
-            checkAvailability: checkAvailability,
-            create: create,
-            login: login
-        };
+    function userService($http, variables){
+        this.checkAvailability = checkAvailability;
+        this.create = create;
+        this.login = login;
+
+        var fileApi = "user.php";
         
-        return exports;
-
         ////////////////
 
         function checkAvailability(username){
