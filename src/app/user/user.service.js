@@ -1,15 +1,16 @@
 (function () {
     'use strict';
     angular
-        .module('app')
+        .module('app.user')
         .service('userService', userService);
 
-    userService.$inject = ['$http','variables'];
+    userService.$inject = ['$http','variables','$location'];
 
-    function userService($http, variables){
+    function userService($http, variables, $location){
         this.checkAvailability = checkAvailability;
         this.create = create;
         this.login = login;
+        this.authenticated = authenticated;
 
         var fileApi = "user.php";
         
@@ -30,6 +31,10 @@
         function login(data){
             data.action = "login";
             return $http.post(variables.urlApi + fileApi, data);
+        }
+        
+        function authenticated(){
+            $location.path('/dashboard');
         }
     }
 })();

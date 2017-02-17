@@ -1,8 +1,9 @@
 <div class="inset"></div>
-<div layout="row" flex="90" flex-offset="5">
-    <section flex="60">
+<div layout="row" layout-xs="column" flex="90" flex-offset="5">
+  
+   <section flex="60" flex-xs="100">
         <!-- Content -->
-        <md-card>
+        <md-card class="md-whiteframe-3dp">
             <md-card-title>
                 <md-card-title-text>
                     <span class="md-headline"><h1>Seja bem-vindo ao Varrer!</h1></span>
@@ -16,10 +17,11 @@
             </md-card-content>
         </md-card>
     </section>
-    <section flex="40">
+    
+    <section flex="40" flex-xs="100">
 
         <!-- LOGIN -->
-        <md-card ng-show="homeVm.isAction('login')">
+        <md-card ng-show="homeVm.isAction('login')" class="md-whiteframe-3dp">
             <md-card-title>
                 <md-card-title-text>
                     <span class="md-headline">Login</span>
@@ -61,9 +63,8 @@
         </md-card>
 
         <!-- SIGNIN -->
-        <md-card ng-show="homeVm.isAction('singin')">
-           <loading-spinner></loading-spinner>
-            <form name="signinForm" style="opacity: 0">
+        <md-card ng-if="homeVm.isAction('singin')" class="md-whiteframe-3dp">
+            <form name="signinForm">
                 <md-card-title>
                     <md-card-title-text>
                         <span class="md-headline">Cadastre sua turma</span>

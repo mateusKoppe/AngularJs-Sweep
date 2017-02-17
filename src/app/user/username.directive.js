@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('app')
+        .module('app.user')
         .directive('username', username);
 
     username.$inject = ['userService', '$timeout', '$q'];

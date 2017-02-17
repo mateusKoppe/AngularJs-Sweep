@@ -1,8 +1,5 @@
-/* Directórios */
-var javascripts = ['app/**/*.js', '!app/components'];
-
-
 var gulp = require('gulp'),
+    order = require('gulp-order'),
     concat = require('gulp-concat'),
     rename = require('gulp-rename'),
     uglify = require('gulp-uglify'),
@@ -10,34 +7,52 @@ var gulp = require('gulp'),
     watch = require('gulp-watch'),
     sass = require('gulp-sass'),
     cleanCSS = require('gulp-clean-css'),
-    autoprefixer = require('gulp-autoprefixer');
+    autoprefixer = require('gulp-autoprefixer'),
+    browserSync = require('browser-sync').create();
 
-
-gulp.task('script', function(){
-    return watch(javascripts, function(){
-        gulp.src(javascripts)
-        .pipe(sourcemaps.init())
-        .pipe(concat('script.concat.js'))
-        .pipe(gulp.dest('dist'))
-        .pipe(rename('script.min.js'))
-        .pipe(uglify())
-        .pipe(sourcemaps.write('./'))
-        .pipe(gulp.dest('dist'));
+gulp.task('browser-sync', function () {
+    browserSync.init({
+        server: {
+            baseDir: "./src/"
+        }
     });
 });
 
-gulp.task('sass', function(){
-    return watch('**/scss/*.scss', function(){
+gulp.task('script', function () {
+    script();
+    return watch('./src/app/**/*.js', function () {
+        script();
+    });
+
+    function script() {
+        gulp.src(['./src/app/**/*.js', '!./src/app/**/*.min.js'])
+            .pipe(sourcemaps.init())
+            .pipe(order([   
+                '**/*.module.js',
+                '**/*.js'
+            ]))
+            .pipe(concat('app.min.js'))
+            .pipe(uglify())
+            .pipe(sourcemaps.write('./'))
+            .pipe(gulp.dest('./src/app/dist'));
+    }
+});
+
+gulp.task('sass', function () {
+    return watch('**/scss/*.scss', function () {
+        console.log("test");
         gulp.src('**/scss/app.scss')
-        .pipe(sourcemaps.init())
-        .pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError))
-        .pipe(rename('app.css'))
-        .pipe(autoprefixer())
-        .pipe(cleanCSS())
-        .pipe(sourcemaps.write('./'))
-        .pipe(gulp.dest('src/app/dist'));
-        
+            .pipe(sourcemaps.init())
+            .pipe(sass({
+                outputStyle: 'compressed'
+            }).on('error', sass.logError))
+            .pipe(rename('app.css'))
+            .pipe(autoprefixer())
+            .pipe(cleanCSS())
+            .pipe(sourcemaps.write('./'))
+            .pipe(gulp.dest('src/app/dist'));
+
     })
 });
 
-gulp.task('default', ['script', 'sass']);
+gulp.task('default', ['script', 'sass', 'browser-sync']);

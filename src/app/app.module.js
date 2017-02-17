@@ -2,9 +2,11 @@
     'use strick';
     
     angular.module('app', [
-        'ngRoute',
         'ngMaterial',
-        'ngMessages'
+        'ngMessages',
+        'ngAnimate',
+        'ui.router',
+        'app.user'
     ]);
     
 })();

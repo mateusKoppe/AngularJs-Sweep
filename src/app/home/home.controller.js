@@ -28,6 +28,7 @@
 
         // Init function
         function activate() {
+            
         }
         
         //Publics
@@ -45,14 +46,15 @@
                 vm.signin = {};
                 $scope.signinForm.$setUntouched();
                 vm.userAction = 'login';
-                $scope.apply();
             });
         }
         
         function userLogin(){
             userService.login(vm.login).then(function(result){
                 vm.login = {};
-                console.log(result.data);
+                if(result.data){
+                    
+                }
             });
         }
     }
