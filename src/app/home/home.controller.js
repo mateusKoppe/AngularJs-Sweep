@@ -5,10 +5,10 @@
         .module('app')
         .controller('homeController', homeController);
 
-    homeController.$inject = ['$scope','userService'];
+    homeController.$inject = ['$scope','$location'];
 
     /* @ngInject */
-    function homeController($scope ,userService){
+    function homeController($scope , $location){
         var vm = this;            
         
         //Variables
@@ -19,8 +19,11 @@
         //Functions
         vm.isAction = isAction;
         vm.setAction = setAction;
-        vm.userCreate = userCreate;
-        vm.userLogin = userLogin;
+        vm.userCreated = userCreated;
+        
+        vm.test = function(){
+            console.log("ok");
+        }
         
         activate();
 
@@ -41,21 +44,10 @@
             vm.userAction = action;
         }
         
-        function userCreate(){
-            userService.create(vm.signin).then(function(result){
-                vm.signin = {};
-                $scope.signinForm.$setUntouched();
-                vm.userAction = 'login';
-            });
+        function userCreated(){
+            setAction('login');
+            
         }
         
-        function userLogin(){
-            userService.login(vm.login).then(function(result){
-                vm.login = {};
-                if(result.data){
-                    
-                }
-            });
-        }
     }
 })();

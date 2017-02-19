@@ -29,7 +29,9 @@
                 </md-card-title-text>
             </md-card-title>
             <md-card-content layout-align="space-between">
-                <form name="loginForm">
+                <form name="loginForm" 
+                   ng-controller="userController as userVm"
+                   ng-submit="userVm.userLogin('loginForm')">
                     <div layout-gt-sm="row" layout="column">
 
                         <!-- Login -->
@@ -47,7 +49,7 @@
 
                     <!-- Button -->
                     <md-card-actions flex="100" layout="row">
-                        <md-button ng-disabled="loginForm.$invalid" ng-click="homeVm.userLogin()" class="md-raised md-accent">
+                        <md-button type="submit" ng-disabled="loginForm.$invalid" class="md-raised md-accent">
                             Login
                         </md-button>
                     </md-card-actions>
@@ -63,8 +65,10 @@
         </md-card>
 
         <!-- SIGNIN -->
-        <md-card ng-if="homeVm.isAction('singin')" class="md-whiteframe-3dp">
-            <form name="signinForm">
+        <md-card ng-show="homeVm.isAction('singin')" class="md-whiteframe-3dp" user-singup="homeVm.userCreated();">
+            <form name="signinForm"
+               ng-controller="SignController as signVm"
+               ng-submit="signVm.create(signin, 'signinForm')">
                 <md-card-title>
                     <md-card-title-text>
                         <span class="md-headline">Cadastre sua turma</span>
@@ -77,7 +81,7 @@
                         <!-- UserName -->
                         <md-input-container class="md-block">
                             <label>Login</label>
-                            <input ng-model="homeVm.signin.username" maxlength="20" ng-maxlength="20" ng-minlength="2" username ng-model-options="{updateOn: 'default blur', debounce: {default: 500, blur: 0}}" name="username" required>
+                            <input ng-model="signin.username" maxlength="20" ng-maxlength="20" ng-minlength="2" username ng-model-options="{updateOn: 'default blur', debounce: {default: 500, blur: 0}}" name="username" required>
                             <div ng-messages="signinForm.username.$error">
                                 <div ng-message="required">Este campo é obrigatório.</div>
                                 <div ng-message="minlength, maxlength">O login deve conter de 2 a 20 caracteres.</div>
@@ -90,7 +94,7 @@
                             <!-- password -->
                             <md-input-container class="md-block">
                                 <label>Senha</label>
-                                <input type="password" ng-model="homeVm.signin.password" maxlength="20" ng-maxlength="20" ng-minlength="6" name="password" required>
+                                <input type="password" ng-model="signin.password" maxlength="20" ng-maxlength="20" ng-minlength="6" name="password" required>
                                 <div ng-messages="signinForm.password.$error">
                                     <div ng-message="required">Este campo é obrigatório.</div>
                                     <div ng-message="minlength, maxlength">A senha deve conter de 6 e 20 caracteres.</div>
@@ -100,7 +104,7 @@
                             <!-- passwordRepeat -->
                             <md-input-container class="md-block">
                                 <label>Repita a senha</label>
-                                <input type="password" password-check="homeVm.signin.password" ng-model="homeVm.signin.passwordRepeat" name="passwordRepeat" required>
+                                <input type="password" password-check="signin.password" ng-model="signin.passwordRepeat" name="passwordRepeat" required>
                                 <div ng-messages="signinForm.passwordRepeat.$error">
                                     <div ng-message="required">Este campo é obrigatório.</div>
                                     <div ng-message="passwordCheck">As senhas precisam coincidir.</div>
@@ -111,7 +115,9 @@
 
                     <!-- Button -->
                     <md-card-actions flex="100" layout="row">
-                        <md-button ng-click="homeVm.userCreate(homeVm.signin)" ng-disabled="signinForm.$invalid" class="md-raised md-accent">
+                        <md-button class="md-raised md-accent" type="submit"
+                           ng-click="homeVm.userCreate(homeVm.signin)" 
+                           ng-disabled="signinForm.$invalid">
                             Cadastro
                         </md-button>
                     </md-card-actions>
