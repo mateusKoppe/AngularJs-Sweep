@@ -32,7 +32,6 @@
         function defineClassName(data){
             data.action = "defineClass";
             data.id = loginFactory.getUser().user_id;
-            console.log(data);
             return $http.post(variables.urlApi + fileApi, data);
         }
         

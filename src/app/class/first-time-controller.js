@@ -5,9 +5,9 @@
         .module('app.class')
         .controller('FirstTimeController', FirstTimeController);
 
-    FirstTimeController.$inject = ['userFactory'];
+    FirstTimeController.$inject = ['userFactory', 'loginFactory', '$state'];
 
-    function FirstTimeController(userFactory) {
+    function FirstTimeController(userFactory, loginFactory, $state) {
         var vm = this;
         vm.setClass = setClass;
 
@@ -15,8 +15,9 @@
             var data = {
                 className: className
             }
-            console.log(className);
             userFactory.defineClassName(data);
+            loginFactory.getUser().user_class = className;
+            $state.go('class');
         }
     }
 })();

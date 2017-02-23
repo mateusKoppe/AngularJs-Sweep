@@ -14,7 +14,8 @@
                     controller: 'ClassController',
                     controllerAs: 'vm',
                     onEnter: ['$state', 'loginFactory',function($state, loginFactory){
-                        if(!loginFactory.getUser()) $state.go("home");
+                        if(loginFactory.getUser() == {}) $state.go("home");
+                        if(!loginFactory.getUser().user_id) $state.go("home");
                         if(!loginFactory.getUser().user_class) $state.go("firstTime");
                     }]
                 })
@@ -22,7 +23,12 @@
                     url: '/turma/primeiravisita',
                     templateUrl: 'app/class/first-time.template.html',
                     controller: 'FirstTimeController',
-                    controllerAs: 'vm'
+                    controllerAs: 'vm',
+                    onEnter: ['$state', 'loginFactory',function($state, loginFactory){
+                        if(loginFactory.getUser() == {}) $state.go("home");
+                        if(!loginFactory.getUser().user_id) $state.go("home");
+                        if(loginFactory.getUser().user_class) $state.go("class");
+                    }]
                 })
         }
     
