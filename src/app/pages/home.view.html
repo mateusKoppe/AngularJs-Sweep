@@ -30,20 +30,20 @@
             </md-card-title>
             <md-card-content layout-align="space-between">
                 <form name="loginForm" 
-                   ng-controller="userController as userVm"
-                   ng-submit="userVm.userLogin('loginForm')">
+                   ng-controller="SignController as signVm"
+                   ng-submit="signVm.login(login, 'loginForm', 'class')">
                     <div layout-gt-sm="row" layout="column">
 
                         <!-- Login -->
                         <md-input-container class="md-block">
                             <label>Usúario</label>
-                            <input type="text" name="login" ng-model="homeVm.login.username" required>
+                            <input type="text" name="login" ng-model="login.username" required>
                         </md-input-container>
 
                         <!-- Password -->
                         <md-input-container class="md-block">
                             <label>Senha</label>
-                            <input type="password" name="password" ng-model="homeVm.login.password" required>
+                            <input type="password" name="password" ng-model="login.password" required>
                         </md-input-container>
                     </div>
 

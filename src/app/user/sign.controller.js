@@ -5,32 +5,34 @@
         .module('app.user')
         .controller('SignController', SignController);
 
-    SignController.$inject = ['$scope','$rootScope','userService'];
 
     /* @ngInject */
-    function SignController($scope, $rootScope, userService){
+    SignController.$inject = ['$rootScope', '$state', '$scope','userFactory','loginFactory'];
+    function SignController($rootScope, $state, $scope, userFactory, loginFactory){
         var vm = this;
         
         vm.create = create;
-        vm.userLogin = userLogin;
+        vm.login = login;
         
-        function create(data, form){
-            var userData = data;
-            userService.create(userData).then(function(result){
-                angular.copy({}, data);
+        function create(user, form){
+            userFactory.create(user).then(function(result){
+                angular.copy({}, user);
                 $rootScope.$broadcast('userCreate');
                 $scope[form].$setUntouched();
                 $scope[form].$setPristine();
             });
         }
         
-        function userLogin(){
-            userService.login(vm.login).then(function(result){
-                vm.login = {};
+        function login(user, form, redirect){
+            userFactory.login(user).then(function(result){
                 if(result.data){
-                    console.log(result.data);
-                    console.log("testafter");
-                    $location.path('/turma');
+                    angular.copy({}, user);
+                    loginFactory.setUser(result.data);
+                    if($scope[form]){ 
+                        $scope[form].$setUntouched();
+                        $scope[form].$setPristine();
+                    }
+                    $state.go(redirect);
                 }
             });
         }

@@ -7,7 +7,6 @@
 
     homeController.$inject = ['$scope','$location'];
 
-    /* @ngInject */
     function homeController($scope , $location){
         var vm = this;            
         
@@ -21,21 +20,7 @@
         vm.setAction = setAction;
         vm.userCreated = userCreated;
         
-        vm.test = function(){
-            console.log("ok");
-        }
-        
-        activate();
-
-        ////////////////
-
-        // Init function
-        function activate() {
-            
-        }
-        
         //Publics
-                
         function isAction(action){
             return vm.userAction === action;
         }
@@ -46,7 +31,6 @@
         
         function userCreated(){
             setAction('login');
-            
         }
         
     }

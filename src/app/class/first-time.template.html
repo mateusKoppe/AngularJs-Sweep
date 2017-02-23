@@ -1,0 +1,29 @@
+<div class="inset"></div>
+<div layout="row" layout-xs="column" flex="60" flex-offset="20">
+
+    <section flex="100" flex-xs="100">
+        <!-- Content -->
+        <md-card class="md-whiteframe-3dp">
+            <md-card-title>
+                <md-card-title-text>
+                    <span class="md-headline"><h1>Acesando pela primeira vez?</h1></span>
+                </md-card-title-text>
+            </md-card-title>
+            <md-card-content>
+                <div>
+                    <p>Informe o nome da sua turma.</p>
+                    <form name="classNameForm" ng-submit="vm.setClass(className)">
+                        <div>
+                            <md-input-container class="md-block">
+                                <label>Turma</label>
+                                <input ng-model="className" required value="Nome da turma">
+                            </md-input-container>
+                        </div>
+                        <h2> {{className}}</h2>
+                        <md-button type="submit" ng-disabled="classNameForm.$invalid" class="md-raised md-accent">Definir</md-button>
+                    </form>
+                </div>
+            </md-card-content>
+        </md-card>
+    </section>
+</div>

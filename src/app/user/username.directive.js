@@ -5,9 +5,9 @@
         .module('app.user')
         .directive('username', username);
 
-    username.$inject = ['userService', '$timeout', '$q'];
+    username.$inject = ['userFactory', '$timeout', '$q'];
 
-    function username(userService, $timeout, $q) {
+    function username(userFactory, $timeout, $q) {
         var directive = {
             require: 'ngModel',
             link: link,
@@ -20,7 +20,7 @@
                 
                 var defer = $q.defer();
                 
-                userService.checkAvailability(modelValue).then(function (result) {
+                userFactory.checkAvailability(modelValue).then(function (result) {
                     if(result.data){
                         defer.resolve();
                     }else{

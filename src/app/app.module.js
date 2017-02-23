@@ -6,7 +6,8 @@
         'ngMessages',
         'ngAnimate',
         'ui.router',
-        'app.user'
+        'app.user',
+        'app.class'
     ])
     .value('variables', {
         "urlBase": 'http://localhost:3000',

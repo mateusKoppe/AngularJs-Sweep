@@ -1,19 +1,21 @@
-/*(function () {
-    'use strict';
+(function(){
+    'use strick';
 
     angular
         .module('app')
         .config(routes)
-
-    routes.$inject = ['$stateProvider'];
-
-    function routes($stateProvider) {
+    
+    routes.$inject = ['$locationProvider', '$stateProvider', '$urlRouterProvider'];
+    function routes ($locationProvider, $stateProvider, $urlRouterProvider) {
         $stateProvider
             .state({
                 name: 'home',
-                url: '',
-                template: '<h1>Test</h1>' 
+                url: '/',
+                controller: "homeController",
+                controllerAs: "homeVm",
+                templateUrl: "app/pages/home.view.html" 
             });
-        
+        $urlRouterProvider.otherwise('/');
     }
-})();*/
+    
+})();

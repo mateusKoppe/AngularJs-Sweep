@@ -39,9 +39,8 @@ gulp.task('script', function () {
 });
 
 gulp.task('sass', function () {
-    return watch('**/scss/*.scss', function () {
-        console.log("test");
-        gulp.src('**/scss/app.scss')
+    return watch('**/*.scss', function () {
+        gulp.src('src/app/core/style/app.style.scss')
             .pipe(sourcemaps.init())
             .pipe(sass({
                 outputStyle: 'compressed'
@@ -50,8 +49,9 @@ gulp.task('sass', function () {
             .pipe(autoprefixer())
             .pipe(cleanCSS())
             .pipe(sourcemaps.write('./'))
-            .pipe(gulp.dest('src/app/dist'));
-
+            .pipe(gulp.dest('src/app/dist').on('end', function(){
+                browserSync.reload();
+            }));
     })
 });
 
