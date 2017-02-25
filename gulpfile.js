@@ -10,7 +10,7 @@ var gulp = require('gulp'),
     autoprefixer = require('gulp-autoprefixer'),
     browserSync = require('browser-sync').create();
 
-gulp.task('browser-sync', function () {
+gulp.task('server', ['watchs'] ,function () {
     browserSync.init({
         server: {
             baseDir: "./src/"
@@ -18,41 +18,42 @@ gulp.task('browser-sync', function () {
     });
 });
 
-gulp.task('script', function () {
-    script();
-    return watch('./src/app/**/*.js', function () {
-        script();
-    });
+/* Watchs  */
+gulp.task('watchs', ['sass-watch', 'javascript-watch']);
 
-    function script() {
-        gulp.src(['./src/app/**/*.js', '!./src/app/**/*.min.js'])
-            .pipe(sourcemaps.init())
-            .pipe(order([   
-                '**/*.module.js',
-                '**/*.js'
-            ]))
-            .pipe(concat('app.min.js'))
-            .pipe(uglify())
-            .pipe(sourcemaps.write('./'))
-            .pipe(gulp.dest('./src/app/dist'));
-    }
+gulp.task('sass-watch', ['sass'], function(){
+    return gulp.watch("src/**/*.scss", ['sass']);
+});
+
+gulp.task('javascript-watch', ['javascript'], function(){
+    console.log('javascript-watch');
+    return gulp.watch(['src/**/*.js', '!src/**/dist/*.js'], ['javascript']);
+});
+
+/**  Basic functions **/
+gulp.task('javascript', function () {    
+    gulp.src(['./src/app/**/*.js', '!**/dist/**.js'])
+        .pipe(sourcemaps.init())
+        .pipe(order([   
+            '**/*.module.js',
+            '**/*.js'
+        ]))
+        .pipe(concat('app.js'))
+        .pipe(sourcemaps.write('./'))
+        .pipe(gulp.dest('./src/app/dist'));
 });
 
 gulp.task('sass', function () {
-    return watch('**/*.scss', function () {
-        gulp.src('src/app/core/style/app.style.scss')
-            .pipe(sourcemaps.init())
-            .pipe(sass({
-                outputStyle: 'compressed'
-            }).on('error', sass.logError))
-            .pipe(rename('app.css'))
-            .pipe(autoprefixer())
-            .pipe(cleanCSS())
-            .pipe(sourcemaps.write('./'))
-            .pipe(gulp.dest('src/app/dist').on('end', function(){
-                browserSync.reload();
-            }));
-    })
+    gulp.src('src/app/core/style/app.style.scss')
+        .pipe(sourcemaps.init())
+        .pipe(sass({
+            outputStyle: 'compressed'
+        }).on('error', sass.logError))
+        .pipe(rename('app.css'))
+        .pipe(autoprefixer())
+        .pipe(cleanCSS())
+        .pipe(sourcemaps.write('./'))
+        .pipe(gulp.dest('src/app/dist'));
 });
 
-gulp.task('default', ['script', 'sass', 'browser-sync']);
+gulp.task('default', ['javascript', 'sass']);
