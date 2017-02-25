@@ -13,7 +13,7 @@
                 url: '/',
                 controller: "homeController",
                 controllerAs: "homeVm",
-                templateUrl: "app/pages/home.view.html" 
+                templateUrl: "app/pages/home.html" 
             });
         $urlRouterProvider.otherwise('/');
     }

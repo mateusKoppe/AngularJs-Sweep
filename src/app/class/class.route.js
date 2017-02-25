@@ -10,7 +10,7 @@
             $stateProvider
                 .state('class', {
                     url: '/turma',
-                    templateUrl: 'app/class/list.template.html',
+                    templateUrl: 'app/class/list.html',
                     controller: 'ClassController',
                     controllerAs: 'vm',
                     onEnter: ['$state', 'loginFactory',function($state, loginFactory){
@@ -21,7 +21,7 @@
                 })
                 .state('firstTime', {
                     url: '/turma/primeiravisita',
-                    templateUrl: 'app/class/first-time.template.html',
+                    templateUrl: 'app/class/first-time.html',
                     controller: 'FirstTimeController',
                     controllerAs: 'vm',
                     onEnter: ['$state', 'loginFactory',function($state, loginFactory){
