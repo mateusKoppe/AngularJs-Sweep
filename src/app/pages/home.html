@@ -29,19 +29,21 @@
                 </md-card-title-text>
             </md-card-title>
             <md-card-content layout-align="space-between">
+                
+                <!-- Form -->
                 <form name="loginForm" 
                    ng-controller="SignController as signVm"
-                   ng-submit="signVm.login(login, 'loginForm', 'class')">
+                   ng-submit="signVm.login(login, 'loginForm', homeVm.userLogged)">
                     <div layout-gt-sm="row" layout="column">
 
                         <!-- Login -->
-                        <md-input-container class="md-block">
+                        <md-input-container class="md-block" flex="50">
                             <label>Usúario</label>
                             <input type="text" name="login" ng-model="login.username" required>
                         </md-input-container>
 
                         <!-- Password -->
-                        <md-input-container class="md-block">
+                        <md-input-container class="md-block" flex="50">
                             <label>Senha</label>
                             <input type="password" name="password" ng-model="login.password" required>
                         </md-input-container>
@@ -65,10 +67,12 @@
         </md-card>
 
         <!-- SIGNIN -->
-        <md-card ng-show="homeVm.isAction('singin')" class="md-whiteframe-3dp" user-singup="homeVm.userCreated();">
+        <md-card ng-show="homeVm.isAction('singin')" class="md-whiteframe-3dp">
+            
+            <!-- Form -->
             <form name="signinForm"
                ng-controller="SignController as signVm"
-               ng-submit="signVm.create(signin, 'signinForm')">
+               ng-submit="signVm.create(signin, 'signinForm',homeVm.userCreated)">
                 <md-card-title>
                     <md-card-title-text>
                         <span class="md-headline">Cadastre sua turma</span>
@@ -92,7 +96,7 @@
                         <div layout="column" layout-gt-sm="row">
 
                             <!-- password -->
-                            <md-input-container class="md-block">
+                            <md-input-container class="md-block" flex="50">
                                 <label>Senha</label>
                                 <input type="password" ng-model="signin.password" maxlength="20" ng-maxlength="20" ng-minlength="6" name="password" required>
                                 <div ng-messages="signinForm.password.$error">
@@ -102,7 +106,7 @@
                             </md-input-container>
 
                             <!-- passwordRepeat -->
-                            <md-input-container class="md-block">
+                            <md-input-container class="md-block" flex="50">
                                 <label>Repita a senha</label>
                                 <input type="password" password-check="signin.password" ng-model="signin.passwordRepeat" name="passwordRepeat" required>
                                 <div ng-messages="signinForm.passwordRepeat.$error">

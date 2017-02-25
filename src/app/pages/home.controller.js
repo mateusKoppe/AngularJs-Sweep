@@ -5,9 +5,8 @@
         .module('app')
         .controller('homeController', homeController);
 
-    homeController.$inject = ['$scope','$location'];
-
-    function homeController($scope , $location){
+    homeController.$inject = ['$state','loginFactory', 'userFactory'];
+    function homeController($state, loginFactory, userFactory){
         var vm = this;            
         
         //Variables
@@ -19,6 +18,7 @@
         vm.isAction = isAction;
         vm.setAction = setAction;
         vm.userCreated = userCreated;
+        vm.userLogged = userLogged;
         
         //Publics
         function isAction(action){
@@ -29,8 +29,15 @@
             vm.userAction = action;
         }
         
-        function userCreated(){
-            setAction('login');
+        function userCreated(user){
+            userFactory.login(user).then(function(result){
+                userLogged(result.data);
+            });
+        }
+
+        function userLogged(user){
+            loginFactory.setUser(user);
+            $state.go("class");
         }
         
     }

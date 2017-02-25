@@ -179,9 +179,8 @@
         .module('app')
         .controller('homeController', homeController);
 
-    homeController.$inject = ['$scope','$location'];
-
-    function homeController($scope , $location){
+    homeController.$inject = ['$state','loginFactory', 'userFactory'];
+    function homeController($state, loginFactory, userFactory){
         var vm = this;            
         
         //Variables
@@ -193,6 +192,7 @@
         vm.isAction = isAction;
         vm.setAction = setAction;
         vm.userCreated = userCreated;
+        vm.userLogged = userLogged;
         
         //Publics
         function isAction(action){
@@ -203,8 +203,15 @@
             vm.userAction = action;
         }
         
-        function userCreated(){
-            setAction('login');
+        function userCreated(user){
+            userFactory.login(user).then(function(result){
+                userLogged(result.data);
+            });
+        }
+
+        function userLogged(user){
+            loginFactory.setUser(user);
+            $state.go("class");
         }
         
     }
@@ -243,66 +250,38 @@
         .module('app.user')
         .controller('SignController', SignController);
 
-
-    /* @ngInject */
-    SignController.$inject = ['$rootScope', '$state', '$scope','userFactory','loginFactory'];
-    function SignController($rootScope, $state, $scope, userFactory, loginFactory){
-        var vm = this;
-        
+    SignController.$inject = ['$rootScope', '$scope','userFactory'];
+    function SignController($rootScope, $scope, userFactory){
+        var vm = this;        
         vm.create = create;
         vm.login = login;
         
-        function create(user, form){
-            userFactory.create(user).then(function(result){
-                angular.copy({}, user);
-                $rootScope.$broadcast('userCreate');
-                $scope[form].$setUntouched();
-                $scope[form].$setPristine();
+        function create(user, form, success, error){
+            var userData = angular.copy(user);
+            angular.copy({}, user)
+            userFactory.create(userData).then(function(result){
+                if($scope[form]){ 
+                    $scope[form].$setUntouched();
+                    $scope[form].$setPristine();
+                }
+                success(userData);
             });
         }
         
-        function login(user, form, redirect){
-            userFactory.login(user).then(function(result){
+        function login(user, form, success, error){
+            var userData = angular.copy(user);
+            angular.copy({}, user)
+            userFactory.login(userData).then(function(result){
                 if(result.data){
-                    angular.copy({}, user);
-                    loginFactory.setUser(result.data);
                     if($scope[form]){ 
                         $scope[form].$setUntouched();
                         $scope[form].$setPristine();
                     }
-                    $state.go(redirect);
+                    success(result.data);
                 }
             });
         }
     }
-})();
-(function () {
-    'use strict';
-
-    angular
-        .module('app.user')
-        .directive('userSingup', userSingup);
-
-    userSingup.$inject = [];
-
-    /* @ngInject */
-    function userSingup() {
-        var directive = {
-            link: link,
-            restrict: 'A',
-            scope: {
-                userSingup: '&'
-            }
-        };
-        return directive;
-
-        function link(scope, element, attrs) {      
-            scope.$on('userCreate', function(){
-                scope.userSingup();
-            });
-        }
-    }
-
 })();
 (function () {
     'use strict';
