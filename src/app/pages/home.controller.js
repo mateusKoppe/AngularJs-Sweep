@@ -35,8 +35,7 @@
             });
         }
 
-        function userLogged(user){
-            loginFactory.setUser(user);
+        function userLogged(){
             $state.go("class");
         }
         

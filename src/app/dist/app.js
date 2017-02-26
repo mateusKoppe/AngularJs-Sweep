@@ -20,9 +20,11 @@
     
     angular
         .module('app.class', [
-            'ui.router' 
+            'ui.router',
+            'app.user'
         ])
 })();
+
 (function(){
     'use strict';
     
@@ -31,21 +33,25 @@
             'ui.router'
         ])
 })();
-(function(){
+(function () {
     'use strict';
-    
+
     angular
         .module('app.class')
         .controller('ClassController', ClassController);
-    
-        ClassController.$inject = ['loginFactory'];
-        function ClassController(loginFactory){
-            var vm = this;
-            vm.test = "test";
-            vm.className = loginFactory.getUser().user_class;
-            
+
+    ClassController.$inject = ['loginFactory', '$state'];
+    function ClassController(loginFactory, $state) {
+        var vm = this;
+        vm.exit = exit;
+        vm.className = loginFactory.getUser().user_class;
+
+        function exit() {
+            $state.go('home');
         }
+    }
 })();
+
 (function(){
     'use strict';
 
@@ -106,7 +112,7 @@
     }
 })();
 
-(function(){
+(function () {
     'use strict';
 
     angular
@@ -114,11 +120,17 @@
         .controller('StudantController', StudantController);
 
     StudantController.$inject = ['loginFactory'];
-    function StudantController(loginFactory){
-        var vm = this;
 
+    function StudantController(loginFactory) {
+        var vm = this;
+        vm.notSelected = notSelected;
         vm.studants = loginFactory.getUser().studants;
-        console.log(vm.studants);
+
+
+
+        function notSelected(swepper, value) {
+            return swepper != value;
+        }
     }
 })();
 
@@ -226,8 +238,7 @@
             });
         }
 
-        function userLogged(user){
-            loginFactory.setUser(user);
+        function userLogged(){
             $state.go("class");
         }
         
@@ -246,7 +257,8 @@
         
         var service = {
             getUser: getUser,
-            setUser: setUser
+            setUser: setUser,
+            cleanUser: cleanUser
         }
         return service;
         
@@ -256,6 +268,10 @@
         
         function setUser(newUser){
             user = newUser;
+        }
+
+        function cleanUser(){
+            setUser(false);
         }
         
     }
@@ -267,11 +283,12 @@
         .module('app.user')
         .controller('SignController', SignController);
 
-    SignController.$inject = ['$rootScope', '$scope','userFactory'];
-    function SignController($rootScope, $scope, userFactory){
+    SignController.$inject = ['$rootScope', '$scope','userFactory', 'loginFactory'];
+    function SignController($rootScope, $scope, userFactory, loginFactory){
         var vm = this;        
         vm.create = create;
         vm.login = login;
+        vm.logout = logout;
         
         function create(user, form, success, error){
             var userData = angular.copy(user);
@@ -294,9 +311,15 @@
                         $scope[form].$setUntouched();
                         $scope[form].$setPristine();
                     }
+                    loginFactory.setUser(result.data);
                     success(result.data);
                 }
             });
+        }
+
+        function logout(callback){
+            loginFactory.cleanUser();
+            callback();
         }
     }
 })();

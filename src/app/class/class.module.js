@@ -3,6 +3,7 @@
     
     angular
         .module('app.class', [
-            'ui.router' 
+            'ui.router',
+            'app.user'
         ])
 })();

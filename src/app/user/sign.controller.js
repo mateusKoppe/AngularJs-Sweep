@@ -5,11 +5,12 @@
         .module('app.user')
         .controller('SignController', SignController);
 
-    SignController.$inject = ['$rootScope', '$scope','userFactory'];
-    function SignController($rootScope, $scope, userFactory){
+    SignController.$inject = ['$rootScope', '$scope','userFactory', 'loginFactory'];
+    function SignController($rootScope, $scope, userFactory, loginFactory){
         var vm = this;        
         vm.create = create;
         vm.login = login;
+        vm.logout = logout;
         
         function create(user, form, success, error){
             var userData = angular.copy(user);
@@ -32,9 +33,15 @@
                         $scope[form].$setUntouched();
                         $scope[form].$setPristine();
                     }
+                    loginFactory.setUser(result.data);
                     success(result.data);
                 }
             });
+        }
+
+        function logout(callback){
+            loginFactory.cleanUser();
+            callback();
         }
     }
 })();

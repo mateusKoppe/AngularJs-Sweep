@@ -11,7 +11,8 @@
         
         var service = {
             getUser: getUser,
-            setUser: setUser
+            setUser: setUser,
+            cleanUser: cleanUser
         }
         return service;
         
@@ -23,5 +24,9 @@
             user = newUser;
         }
         
+        function cleanUser(){
+            setUser(false);
+        }
+
     }
 })();

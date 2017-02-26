@@ -1,4 +1,4 @@
-(function(){
+(function () {
     'use strict';
 
     angular
@@ -6,10 +6,16 @@
         .controller('StudantController', StudantController);
 
     StudantController.$inject = ['loginFactory'];
-    function StudantController(loginFactory){
-        var vm = this;
 
+    function StudantController(loginFactory) {
+        var vm = this;
+        vm.notSelected = notSelected;
         vm.studants = loginFactory.getUser().studants;
-        console.log(vm.studants);
+
+
+
+        function notSelected(swepper, value) {
+            return swepper != value;
+        }
     }
 })();
