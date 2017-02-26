@@ -48,17 +48,17 @@
 })();
 (function(){
     'use strict';
-    
+
     angular
         .module('app.class')
         .config(routes)
-    
+
         routes.$inject = ['$stateProvider'];
         function routes($stateProvider){
             $stateProvider
                 .state('class', {
                     url: '/turma',
-                    templateUrl: 'app/class/list.html',
+                    templateUrl: 'app/class/class.html',
                     controller: 'ClassController',
                     controllerAs: 'vm',
                     onEnter: ['$state', 'loginFactory',function($state, loginFactory){
@@ -79,8 +79,9 @@
                     }]
                 })
         }
-    
+
 })();
+
 (function () {
     'use strict';
 
@@ -102,6 +103,21 @@
             loginFactory.getUser().user_class = className;
             $state.go('class');
         }
+    }
+})();
+
+(function(){
+    'use strict';
+
+    angular
+        .module('app.class')
+        .controller('StudantController', StudantController);
+
+    StudantController.$inject = [];
+    function StudantController(){
+        var vm = this;
+
+
     }
 })();
 

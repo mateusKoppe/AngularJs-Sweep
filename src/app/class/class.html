@@ -1,0 +1,85 @@
+<div class="inset"></div>
+<div layout="row" layout-xs="column" flex="80" flex-offset="10">
+
+    <section flex="100" flex-xs="100">
+        <!-- Content -->
+        <md-card class="md-whiteframe-3dp">
+            <md-card-title>
+
+                <!-- Header -->
+                <md-card-title-text>
+                    <div layout="row" layout-align="center center">
+                        <div flex="grow">
+                            <span class="md-headline">
+                                <h1>{{vm.className}}</h1>
+                            </span>
+                        </div>
+                        <div flex="auto">
+                            <md-button flex="100" class="md-raised md-warn">Sair</md-button>
+                        </div>
+                    </div>
+                </md-card-title-text>
+
+            </md-card-title>
+            <md-card-content>
+
+                <!-- Sweep -->
+                <section>
+                    <h2>Quem vai varrer?</h2>
+                    <div flex="80" flex-offset="10">
+                        <div layout="row" layout-align="start center">
+                            <div flex="grow">
+                                <div layout="row">
+                                    <md-input-container flex="50">
+                                        <label>Alunos</label>
+                                        <md-select ng-model="sweepers.studant1">
+                                            <md-option ng-repeat="state in [0,1,2,3]" ng-value="state">
+                                                Test
+                                            </md-option>
+                                        </md-select>
+                                    </md-input-container>
+                                    <md-input-container flex="50">
+                                        <label>Alunos</label>
+                                        <md-select ng-model="sweepers.studant2">
+                                            <md-option ng-repeat="state in [0,1,2,3]" ng-value="state">
+                                                Test
+                                            </md-option>
+                                        </md-select>
+                                    </md-input-container>
+                                </div>
+                            </div>
+                            <div flex="auto">
+                                <md-button class="md-raised md-primary">Varrer</md-button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Alunos</h2>
+
+                    <md-list-item>
+                        <md-button class="md-raised md-accent">Novo</md-button>
+                        <md-button class="md-raised md-primary">Editar</md-button>
+                        <md-button class="md-raised md-warn">Excluir</md-button>
+                    </md-list-item>
+                    <br>
+                    <md-list-item>
+                        <md-checkbox ng-click="toggleAll()" ng-model="testfsda"></md-checkbox>
+                        <p><strong>Alunos</strong></p>
+                        <p class="text-center"><strong>Varreu</strong></p>
+                    </md-list-item>
+                    <md-list-item ng-repeat="message in [0,1,2,3,4]">
+                        <md-checkbox ng-model="vm.studants[$index]"></md-checkbox>
+                        <p>Mateus Alan Kirsten Koppe</p>
+                        <p>5 vezes</p>
+                    </md-list-item>
+                </section>
+
+            </md-card-content>
+        </md-card>
+    </section>
+    <!-- <md-button class="md-fab md-mini md-primary md-fab-bottom-right" aria-label="Use Android">
+        <md-icon md-svg-src="img/icons/android.svg"></md-icon>
+    </md-button> -->
+</div>
