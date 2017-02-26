@@ -24,7 +24,7 @@
             <md-card-content>
 
                 <!-- Sweep -->
-                <section>
+                <section ng-controller="StudantController as studantVm">
                     <h2>Quem vai varrer?</h2>
                     <div flex="80" flex-offset="10">
                         <div layout="row" layout-align="start center">
@@ -32,17 +32,17 @@
                                 <div layout="row">
                                     <md-input-container flex="50">
                                         <label>Alunos</label>
-                                        <md-select ng-model="sweepers.studant1">
-                                            <md-option ng-repeat="state in [0,1,2,3]" ng-value="state">
-                                                Test
+                                        <md-select ng-model="studantVm.swepper[0]">
+                                            <md-option ng-if="studantVm.swepper[1] != studant.id" ng-repeat="studant in studantVm.studants" ng-value="studant.id">
+                                                {{studant.name}}
                                             </md-option>
                                         </md-select>
                                     </md-input-container>
                                     <md-input-container flex="50">
                                         <label>Alunos</label>
-                                        <md-select ng-model="sweepers.studant2">
-                                            <md-option ng-repeat="state in [0,1,2,3]" ng-value="state">
-                                                Test
+                                        <md-select ng-model="studantVm.swepper[1]">
+                                            <md-option ng-if="studantVm.swepper[0] != studant.id" ng-repeat="studant in studantVm.studants" ng-value="studant.id">
+                                                {{studant.name}}
                                             </md-option>
                                         </md-select>
                                     </md-input-container>
@@ -55,7 +55,7 @@
                     </div>
                 </section>
 
-                <section>
+                <section ng-controller="StudantController as studantVm">
                     <h2>Alunos</h2>
 
                     <md-list-item>
@@ -69,10 +69,10 @@
                         <p><strong>Alunos</strong></p>
                         <p class="text-center"><strong>Varreu</strong></p>
                     </md-list-item>
-                    <md-list-item ng-repeat="message in [0,1,2,3,4]">
+                    <md-list-item ng-repeat="studant in studantVm.studants">
                         <md-checkbox ng-model="vm.studants[$index]"></md-checkbox>
-                        <p>Mateus Alan Kirsten Koppe</p>
-                        <p>5 vezes</p>
+                        <p flex="75">{{studant.name}}</p>
+                        <p flex="25">{{studant.times}}</p>
                     </md-list-item>
                 </section>
 
