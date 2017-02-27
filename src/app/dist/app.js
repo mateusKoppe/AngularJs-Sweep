@@ -119,18 +119,34 @@
         .module('app.class')
         .controller('StudantController', StudantController);
 
-    StudantController.$inject = ['loginFactory'];
+    StudantController.$inject = ['loginFactory', 'userFactory'];
 
-    function StudantController(loginFactory) {
+    function StudantController(loginFactory, userFactory) {
         var vm = this;
         vm.notSelected = notSelected;
         vm.studants = loginFactory.getUser().studants;
-
-
+        vm.sweep = sweep;
 
         function notSelected(swepper, value) {
             return swepper != value;
         }
+
+        function sweep(studants) {
+            userFactory.sweep(studants);
+            var studantsArray = [];
+            angular.forEach(studants, function(studant){
+                studantsArray.push(studant);
+            });
+            vm.studants = vm.studants
+                .map(function(studant){
+                    if(studantsArray.indexOf(studant) != -1){
+                        studant.times++;
+                        return studant;
+                    }
+                    return studant;
+                });
+        }
+
     }
 })();
 
@@ -244,6 +260,7 @@
         
     }
 })();
+
 (function(){
     'use strict';
     
@@ -269,13 +286,14 @@
         function setUser(newUser){
             user = newUser;
         }
-
+        
         function cleanUser(){
             setUser(false);
         }
-        
+
     }
 })();
+
 (function() {
     'use strict';
 
@@ -323,50 +341,60 @@
         }
     }
 })();
+
 (function () {
     'use strict';
     angular
         .module('app.user')
         .service('userFactory', userFactory);
 
-    userFactory.$inject = ['$http','variables','$location', 'loginFactory'];
+    userFactory.$inject = ['$http', 'variables', '$location', 'loginFactory'];
 
-    function userFactory($http, variables, $location, loginFactory){
+    function userFactory($http, variables, $location, loginFactory) {
         var fileApi = "user.php";
-        
+
         var service = {
             checkAvailability: checkAvailability,
             create: create,
-            defineClassName: defineClassName, 
-            login: login
+            defineClassName: defineClassName,
+            login: login,
+            sweep: sweep
         }
         return service;
-        
-        function checkAvailability(username){
+
+        function checkAvailability(username) {
             var data = {};
             data.action = "checkAvailability";
             data.username = username || "";
             return $http.post(variables.urlApi + fileApi, data);
         };
-        
+
         function create(data) {
             data.action = "create";
             return $http.post(variables.urlApi + fileApi, data);
         };
-        
-        function defineClassName(data){
+
+        function defineClassName(data) {
             data.action = "defineClass";
             data.id = loginFactory.getUser().user_id;
             return $http.post(variables.urlApi + fileApi, data);
         }
-        
-        function login(data){
+
+        function login(data) {
             data.action = "login";
             return $http.post(variables.urlApi + fileApi, data);
         };
-        
+
+        function sweep(studants) {
+            var data = {};
+            data.action = "sweep";
+            data.studants = studants;
+            return $http.post(variables.urlApi + fileApi, data);
+        }
+
     }
 })();
+
 (function () {
     'use strict';
 

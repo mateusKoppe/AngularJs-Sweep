@@ -35,7 +35,9 @@
                                     <md-input-container flex="50">
                                         <label>Alunos</label>
                                         <md-select ng-model="swepper[0]">
-                                            <md-option ng-if="studantVm.notSelected(swepper[1], studant.id)" ng-repeat="studant in studantVm.studants" ng-value="studant.id">
+                                            <md-option
+                                              ng-selected="$index == 0"
+                                              ng-if="studantVm.notSelected(swepper[1], studant)" ng-repeat="studant in studantVm.studants" ng-value="studant">
                                                 {{studant.name}}
                                             </md-option>
                                         </md-select>
@@ -43,7 +45,11 @@
                                     <md-input-container flex="50">
                                         <label>Alunos</label>
                                         <md-select ng-model="swepper[1]">
-                                            <md-option ng-if="studantVm.notSelected(swepper[0], studant.id)" ng-repeat="studant in studantVm.studants" ng-value="studant.id">
+                                            <md-option
+                                               ng-selected="$index == 1"
+                                               ng-if="studantVm.notSelected(swepper[0], studant)"
+                                               ng-repeat="studant in studantVm.studants"
+                                               ng-value="studant">
                                                 {{studant.name}}
                                             </md-option>
                                         </md-select>
@@ -51,7 +57,7 @@
                                 </div>
                             </div>
                             <div flex="auto">
-                                <md-button class="md-raised md-primary">Varrer</md-button>
+                                <md-button ng-click="studantVm.sweep(swepper)" class="md-raised md-primary">Varrer</md-button>
                             </div>
                         </div>
                     </div>

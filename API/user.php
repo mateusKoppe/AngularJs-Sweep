@@ -65,3 +65,20 @@ if($data->action === 'defineClass'){
     $sql = "UPDATE $DBTable SET user_class = '$className' WHERE user_id = '$id'";
     echo $conn->query($sql)->rowCount() == 0;
 }
+
+if($data->action === 'sweep'){
+    $studants = $data->studants;
+    $sql = "UPDATE studants SET studant_times = studant_times + 1 WHERE ";
+    $i = 0;
+    foreach ($studants as $studant){
+        $stutandsArray[++$i] = $studant->id;
+    }
+    $i = 0;
+    foreach($stutandsArray as $studant){
+        $sql .= " studant_id = $studant";
+        if(++$i != sizeof($stutandsArray)){
+            $sql .= " or";
+        }
+    }
+    echo $conn->query($sql)->rowCount() == 0;
+}
