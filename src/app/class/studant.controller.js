@@ -5,32 +5,28 @@
         .module('app.class')
         .controller('StudantController', StudantController);
 
-    StudantController.$inject = ['loginFactory', 'userFactory', '$mdDialog'];
+    StudantController.$inject = ['loginFactory', 'userFactory', '$mdDialog', 'orderByFilter'];
 
-    function StudantController(loginFactory, userFactory, $mdDialog) {
+    function StudantController(loginFactory, userFactory, $mdDialog, orderByFilter) {
         var vm = this;
         vm.newStudantDialog = newStudantDialog;
         vm.notSelected = notSelected;
-        vm.studants = loginFactory.getUser().studants;
+        vm.someoneStudant = someoneStudant;
+        vm.studants = orderStudants(loginFactory.getUser().studants);
         vm.sweep = sweep;
 
-        function notSelected(swepper, value) {
-            return swepper != value;
+
+        /* Private */
+        function orderStudants(studants){
+            studants = angular.forEach(studants, function(studant){
+                studant.times = new Number(studant.times);
+            });
+            return orderByFilter(studants, ['times', 'name']);
         }
 
-        function sweep(studants) {
-            userFactory.sweep(studants);
-            var studantsArray = [];
-            angular.forEach(studants, function (studant) {
-                studantsArray.push(studant);
-            });
-            vm.studants = vm.studants.map(function (studant) {
-                if (studantsArray.indexOf(studant) != -1) {
-                    studant.times++;
-                    return studant;
-                }
-                return studant;
-            });
+        /* Publics */
+        function notSelected(swepper, value) {
+            return swepper != value;
         }
 
         function newStudantDialog(event) {
@@ -51,9 +47,33 @@
                 };
                 userFactory.createStudant(data).then(function(){
                     vm.studants.push({name: result, times: 0});
+                    vm.studants = orderStudants(vm.studants);
                 });
             });
         };
 
+        function someoneStudant(studants){
+            var studantsArray = [];
+            angular.forEach(studants, function (studant) {
+                studantsArray.push(studant);
+            });
+            return studantsArray && studantsArray.indexOf(true) != -1;
+        }
+
+        function sweep(studants) {
+            userFactory.sweep(studants);
+            var studantsArray = [];
+            angular.forEach(studants, function (studant) {
+                studantsArray.push(studant);
+            });
+            vm.studants = vm.studants.map(function (studant) {
+                if (studantsArray.indexOf(studant) != -1) {
+                    studant.times++;
+                    return studant;
+                }
+                return studant;
+            });
+            vm.studants = orderStudants(vm.studants);
+        }
     }
 })();
