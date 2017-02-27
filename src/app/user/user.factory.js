@@ -12,6 +12,7 @@
         var service = {
             checkAvailability: checkAvailability,
             create: create,
+            createStudant: createStudant,
             defineClassName: defineClassName,
             login: login,
             sweep: sweep
@@ -30,6 +31,11 @@
             return $http.post(variables.urlApi + fileApi, data);
         };
 
+        function createStudant(data){
+            data.action = "createStudant";
+            return $http.post(variables.urlApi + fileApi, data);
+        }
+
         function defineClassName(data) {
             data.action = "defineClass";
             data.id = loginFactory.getUser().user_id;
@@ -46,7 +52,8 @@
             data.action = "sweep";
             data.studants = studants;
             return $http.post(variables.urlApi + fileApi, data);
-        }
+        };
+
 
     }
 })();

@@ -71,7 +71,7 @@ if($data->action === 'sweep'){
     $sql = "UPDATE studants SET studant_times = studant_times + 1 WHERE ";
     $i = 0;
     foreach ($studants as $studant){
-        $stutandsArray[++$i] = $studant->id;
+        $stutandsArray[++$i] = filterValue($studant->id);
     }
     $i = 0;
     foreach($stutandsArray as $studant){
@@ -80,5 +80,12 @@ if($data->action === 'sweep'){
             $sql .= " or";
         }
     }
+    echo $conn->query($sql)->rowCount() == 0;
+}
+
+if($data->action === 'createStudant'){
+    $studant = filterValue($data->name);
+    $class = filterValue($data->class);
+    $sql = "INSERT INTO studants (studant_name, user_id) values ('$studant', $class)";
     echo $conn->query($sql)->rowCount() == 0;
 }

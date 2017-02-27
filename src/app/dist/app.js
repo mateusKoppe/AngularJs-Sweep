@@ -119,10 +119,11 @@
         .module('app.class')
         .controller('StudantController', StudantController);
 
-    StudantController.$inject = ['loginFactory', 'userFactory'];
+    StudantController.$inject = ['loginFactory', 'userFactory', '$mdDialog'];
 
-    function StudantController(loginFactory, userFactory) {
+    function StudantController(loginFactory, userFactory, $mdDialog) {
         var vm = this;
+        vm.newStudantDialog = newStudantDialog;
         vm.notSelected = notSelected;
         vm.studants = loginFactory.getUser().studants;
         vm.sweep = sweep;
@@ -134,18 +135,39 @@
         function sweep(studants) {
             userFactory.sweep(studants);
             var studantsArray = [];
-            angular.forEach(studants, function(studant){
+            angular.forEach(studants, function (studant) {
                 studantsArray.push(studant);
             });
-            vm.studants = vm.studants
-                .map(function(studant){
-                    if(studantsArray.indexOf(studant) != -1){
-                        studant.times++;
-                        return studant;
-                    }
+            vm.studants = vm.studants.map(function (studant) {
+                if (studantsArray.indexOf(studant) != -1) {
+                    studant.times++;
                     return studant;
-                });
+                }
+                return studant;
+            });
         }
+
+        function newStudantDialog(event) {
+            // Appending dialog to document.body to cover sidenav in docs app
+            var confirm = $mdDialog.prompt()
+                .title('Cadastro')
+                .textContent('Preencha o campo abaixo para cadastrar um aluno.')
+                .placeholder('Aluno')
+                .ariaLabel('Aluno')
+                .targetEvent(event)
+                .ok('Adicionar')
+                .cancel('Cancelar');
+
+            $mdDialog.show(confirm).then(function (result) {
+                var data = {
+                    class: loginFactory.getUser().user_id,
+                    name: result
+                };
+                userFactory.createStudant(data).then(function(){
+                    vm.studants.push({name: result, times: 0});
+                });
+            });
+        };
 
     }
 })();
@@ -356,6 +378,7 @@
         var service = {
             checkAvailability: checkAvailability,
             create: create,
+            createStudant: createStudant,
             defineClassName: defineClassName,
             login: login,
             sweep: sweep
@@ -374,6 +397,11 @@
             return $http.post(variables.urlApi + fileApi, data);
         };
 
+        function createStudant(data){
+            data.action = "createStudant";
+            return $http.post(variables.urlApi + fileApi, data);
+        }
+
         function defineClassName(data) {
             data.action = "defineClass";
             data.id = loginFactory.getUser().user_id;
@@ -390,7 +418,8 @@
             data.action = "sweep";
             data.studants = studants;
             return $http.post(variables.urlApi + fileApi, data);
-        }
+        };
+
 
     }
 })();

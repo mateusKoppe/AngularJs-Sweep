@@ -36,8 +36,10 @@
                                         <label>Alunos</label>
                                         <md-select ng-model="swepper[0]">
                                             <md-option
-                                              ng-selected="$index == 0"
-                                              ng-if="studantVm.notSelected(swepper[1], studant)" ng-repeat="studant in studantVm.studants" ng-value="studant">
+                                               ng-selected="$index == 0"
+                                               ng-if="studantVm.notSelected(swepper[1], studant)"
+                                               ng-repeat="studant in studantVm.studants"
+                                               ng-value="studant">
                                                 {{studant.name}}
                                             </md-option>
                                         </md-select>
@@ -67,7 +69,7 @@
                     <h2>Alunos</h2>
 
                     <md-list-item>
-                        <md-button class="md-raised md-accent">Novo</md-button>
+                        <md-button class="md-raised md-accent" ng-click="studantVm.newStudantDialog($event)">Novo</md-button>
                         <md-button class="md-raised md-primary">Editar</md-button>
                         <md-button class="md-raised md-warn">Excluir</md-button>
                     </md-list-item>
