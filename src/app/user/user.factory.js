@@ -15,6 +15,7 @@
             createStudant: createStudant,
             defineClassName: defineClassName,
             login: login,
+            removeStudants: removeStudants,
             sweep: sweep
         }
         return service;
@@ -47,6 +48,15 @@
             return $http.post(variables.urlApi + fileApi, data);
         };
         
+        function removeStudants(studants){
+            var data = {
+                studants: studants,
+                action: "removeStudant"
+            };
+            console.log(data);
+            return $http.post(variables.urlApi + fileApi, data);
+        }
+
         function sweep(studants) {
             var data = {};
             data.action = "sweep";

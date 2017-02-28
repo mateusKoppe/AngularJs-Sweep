@@ -27,19 +27,20 @@ if($data->action === 'login'){
     $username = filterValue($data->username);
     $password = filterValue($data->password);
     $result;
-    $sql = "SELECT *
+    $sql = "SELECT users.user_id, user_class, studant_name, studant_id, studant_times
             FROM $DBTable LEFT JOIN studants on users.user_id = studants.user_id
             WHERE users.user_username = '$username' AND users.user_password = '$password'";
     $query = $conn->query($sql);
     if($row = $query->fetch(PDO::FETCH_ASSOC)){
         $result['user_id'] = $row['user_id'];
-        $result['user_username'] = $row['user_username'];
         $result['user_class'] = $row['user_class'];
-        $result['studants'][] = [
-            'id' => $row['studant_id'],
-            'name' => $row['studant_name'],
-            'times' => $row['studant_times'],
-        ];
+        if(!empty($row['studant_id'])){
+            $result['studants'][] = [
+                'id' => $row['studant_id'],
+                'name' => $row['studant_name'],
+                'times' => $row['studant_times'],
+            ];
+        }
         while($row = $query->fetch(PDO::FETCH_ASSOC)){
             $result['studants'][] = [
                 'id' => $row['studant_id'],
@@ -55,7 +56,7 @@ if($data->action === 'login'){
 
 if($data->action === 'checkAvailability'){
     $username = filterValue($data->username);
-    $sql = "SELECT * FROM $DBTable WHERE user_username = '$username'";
+    $sql = "SELECT user_id FROM $DBTable WHERE user_username = '$username'";
     echo $conn->query($sql)->rowCount() == 0;
 }
 
@@ -87,5 +88,23 @@ if($data->action === 'createStudant'){
     $studant = filterValue($data->name);
     $class = filterValue($data->class);
     $sql = "INSERT INTO studants (studant_name, user_id) values ('$studant', $class)";
+    if($conn->query($sql)->rowCount() != 0){
+        $sql = "SELECT studant_id, studant_name, studant_times FROM studants WHERE studant_name = '$studant' AND user_id = $class ORDER BY studant_id DESC LIMIT 1";
+        echo json_encode($conn->query($sql)->fetch(PDO::FETCH_ASSOC));
+    }
+    return false;
+}
+
+if($data->action === 'removeStudant'){
+    $studants = $data->studants;
+    $sql = "DELETE FROM studants WHERE ";
+    $i = 0;
+    print_r($studants);
+    foreach($studants as $studant){
+        $sql .= " studant_id = $studant->id";
+        if(++$i != sizeof($studants)){
+            $sql .= " or";
+        }
+    }
     echo $conn->query($sql)->rowCount() == 0;
 }

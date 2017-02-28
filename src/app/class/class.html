@@ -70,8 +70,11 @@
 
                     <md-list-item>
                         <md-button class="md-raised md-accent" ng-click="studantVm.newStudantDialog($event)">Novo</md-button>
-                        <md-button class="md-raised md-primary" ng-if="studantVm.someoneStudant(studantVm.selectedStudantes)">Editar</md-button>
-                        <md-button class="md-raised md-warn" ng-if="studantVm.someoneStudant(studantVm.selectedStudantes)">Excluir</md-button>
+                        <md-button class="md-raised md-primary"
+                            ng-if="studantVm.someoneStudant(studantVm.selectedStudantes)">Editar</md-button>
+                        <md-button class="md-raised md-warn"
+                            ng-if="studantVm.someoneStudant(studantVm.selectedStudantes)"
+                            ng-click="studantVm.removeStudant(studantVm.selectedStudantes)">Excluir</md-button>
                     </md-list-item>
                     <br>
                     <md-list-item>
