@@ -461,7 +461,7 @@
             data.action = "login";
             return $http.post(variables.urlApi + fileApi, data);
         };
-
+        
         function removeStudants(studants){
             var data = {
                 studants: studants,
