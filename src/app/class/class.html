@@ -26,7 +26,7 @@
             <md-card-content>
 
                 <!-- Sweep -->
-                <section ng-controller="StudantController as studantVm">
+                <section>
                     <h2>Quem vai varrer?</h2>
                     <div flex="80" flex-offset="10">
                         <div layout="row" layout-align="start center">
@@ -37,8 +37,8 @@
                                         <md-select ng-model="swepper[0]">
                                             <md-option
                                                ng-selected="$index == 0"
-                                               ng-if="studantVm.notSelected(swepper[1], studant)"
-                                               ng-repeat="studant in studantVm.studants"
+                                               ng-if="vm.notSelected(swepper[1], studant)"
+                                               ng-repeat="studant in vm.studants"
                                                ng-value="studant">
                                                 {{studant.name}}
                                             </md-option>
@@ -49,8 +49,8 @@
                                         <md-select ng-model="swepper[1]">
                                             <md-option
                                                ng-selected="$index == 1"
-                                               ng-if="studantVm.notSelected(swepper[0], studant)"
-                                               ng-repeat="studant in studantVm.studants"
+                                               ng-if="vm.notSelected(swepper[0], studant)"
+                                               ng-repeat="studant in vm.studants"
                                                ng-value="studant">
                                                 {{studant.name}}
                                             </md-option>
@@ -59,22 +59,22 @@
                                 </div>
                             </div>
                             <div flex="auto">
-                                <md-button ng-click="studantVm.sweep(swepper)" class="md-raised md-primary">Varrer</md-button>
+                                <md-button ng-click="vm.sweep(swepper)" class="md-raised md-primary">Varrer</md-button>
                             </div>
                         </div>
                     </div>
                 </section>
 
-                <section ng-controller="StudantController as studantVm">
+                <section>
                     <h2>Alunos</h2>
 
                     <md-list-item>
-                        <md-button class="md-raised md-accent" ng-click="studantVm.newStudantDialog($event)">Novo</md-button>
+                        <md-button class="md-raised md-accent" ng-click="vm.newStudantDialog($event)">Novo</md-button>
                         <md-button class="md-raised md-primary"
-                            ng-if="studantVm.someoneStudant(studantVm.selectedStudantes)">Editar</md-button>
+                            ng-if="vm.someoneStudant(vm.selectedStudantes)">Editar</md-button>
                         <md-button class="md-raised md-warn"
-                            ng-if="studantVm.someoneStudant(studantVm.selectedStudantes)"
-                            ng-click="studantVm.removeStudant(studantVm.selectedStudantes)">Excluir</md-button>
+                            ng-if="vm.someoneStudant(vm.selectedStudantes)"
+                            ng-click="vm.removeStudant(vm.selectedStudantes)">Excluir</md-button>
                     </md-list-item>
                     <br>
                     <md-list-item>
@@ -82,8 +82,8 @@
                         <p><strong>Alunos</strong></p>
                         <p class="text-center"><strong>Varreu</strong></p>
                     </md-list-item>
-                    <md-list-item ng-repeat="studant in studantVm.studants">
-                        <md-checkbox ng-model="studantVm.selectedStudantes[$index]"></md-checkbox>
+                    <md-list-item ng-repeat="studant in vm.studants">
+                        <md-checkbox ng-model="vm.selectedStudantes[$index]"></md-checkbox>
                         <p flex="75">{{studant.name}}</p>
                         <p flex="25">{{studant.times}}</p>
                     </md-list-item>

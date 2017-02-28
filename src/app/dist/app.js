@@ -40,95 +40,19 @@
         .module('app.class')
         .controller('ClassController', ClassController);
 
-    ClassController.$inject = ['loginFactory', '$state'];
-    function ClassController(loginFactory, $state) {
+    ClassController.$inject = ['loginFactory', 'userFactory', '$mdDialog', 'orderByFilter', '$state'];
+
+    function ClassController(loginFactory, userFactory, $mdDialog, orderByFilter, $state) {
         var vm = this;
-        vm.exit = exit;
         vm.className = loginFactory.getUser().user_class;
-
-        function exit() {
-            $state.go('home');
-        }
-    }
-})();
-
-(function(){
-    'use strict';
-
-    angular
-        .module('app.class')
-        .config(routes)
-
-        routes.$inject = ['$stateProvider'];
-        function routes($stateProvider){
-            $stateProvider
-                .state('class', {
-                    url: '/turma',
-                    templateUrl: 'app/class/class.html',
-                    controller: 'ClassController',
-                    controllerAs: 'vm',
-                    onEnter: ['$state', 'loginFactory',function($state, loginFactory){
-                        if(loginFactory.getUser() == {}) $state.go("home");
-                        if(!loginFactory.getUser().user_id) $state.go("home");
-                        if(!loginFactory.getUser().user_class) $state.go("firstTime");
-                    }]
-                })
-                .state('firstTime', {
-                    url: '/turma/primeiravisita',
-                    templateUrl: 'app/class/first-time.html',
-                    controller: 'FirstTimeController',
-                    controllerAs: 'vm',
-                    onEnter: ['$state', 'loginFactory',function($state, loginFactory){
-                        if(loginFactory.getUser() == {}) $state.go("home");
-                        if(!loginFactory.getUser().user_id) $state.go("home");
-                        if(loginFactory.getUser().user_class) $state.go("class");
-                    }]
-                })
-        }
-
-})();
-
-(function () {
-    'use strict';
-
-    angular
-        .module('app.class')
-        .controller('FirstTimeController', FirstTimeController);
-
-    FirstTimeController.$inject = ['userFactory', 'loginFactory', '$state'];
-
-    function FirstTimeController(userFactory, loginFactory, $state) {
-        var vm = this;
-        vm.setClass = setClass;
-
-        function setClass(className) {
-            var data = {
-                className: className
-            }
-            userFactory.defineClassName(data);
-            loginFactory.getUser().user_class = className;
-            $state.go('class');
-        }
-    }
-})();
-
-(function () {
-    'use strict';
-
-    angular
-        .module('app.class')
-        .controller('StudantController', StudantController);
-
-    StudantController.$inject = ['loginFactory', 'userFactory', '$mdDialog', 'orderByFilter'];
-
-    function StudantController(loginFactory, userFactory, $mdDialog, orderByFilter) {
-        var vm = this;
+        vm.exit = exit;
         vm.newStudantDialog = newStudantDialog;
         vm.notSelected = notSelected;
         vm.removeStudant = removeStudant;
         vm.someoneStudant = someoneStudant;
         vm.studants = orderStudants(loginFactory.getUser().studants);
         vm.sweep = sweep;
+
 
         vm.$onInit = function(){
             if(!vm.studants){
@@ -137,6 +61,10 @@
         }
 
         /* Private */
+        function exit() {
+            $state.go('home');
+        }
+        
         function orderStudants(studants){
             studants = angular.forEach(studants, function(studant){
                 studant.times = new Number(studant.times);
@@ -218,6 +146,66 @@
                 return studant;
             });
             vm.studants = orderStudants(vm.studants);
+        }
+    }
+})();
+
+(function(){
+    'use strict';
+
+    angular
+        .module('app.class')
+        .config(routes)
+
+        routes.$inject = ['$stateProvider'];
+        function routes($stateProvider){
+            $stateProvider
+                .state('class', {
+                    url: '/turma',
+                    templateUrl: 'app/class/class.html',
+                    controller: 'ClassController',
+                    controllerAs: 'vm',
+                    onEnter: ['$state', 'loginFactory',function($state, loginFactory){
+                        if(loginFactory.getUser() == {}) $state.go("home");
+                        if(!loginFactory.getUser().user_id) $state.go("home");
+                        if(!loginFactory.getUser().user_class) $state.go("firstTime");
+                    }]
+                })
+                .state('firstTime', {
+                    url: '/turma/primeiravisita',
+                    templateUrl: 'app/class/first-time.html',
+                    controller: 'FirstTimeController',
+                    controllerAs: 'vm',
+                    onEnter: ['$state', 'loginFactory',function($state, loginFactory){
+                        if(loginFactory.getUser() == {}) $state.go("home");
+                        if(!loginFactory.getUser().user_id) $state.go("home");
+                        if(loginFactory.getUser().user_class) $state.go("class");
+                    }]
+                })
+        }
+
+})();
+
+(function () {
+    'use strict';
+
+    angular
+        .module('app.class')
+        .controller('FirstTimeController', FirstTimeController);
+
+    FirstTimeController.$inject = ['userFactory', 'loginFactory', '$state'];
+
+    function FirstTimeController(userFactory, loginFactory, $state) {
+        var vm = this;
+        vm.setClass = setClass;
+
+        function setClass(className) {
+            var data = {
+                className: className
+            }
+            userFactory.defineClassName(data);
+            loginFactory.getUser().user_class = className;
+            $state.go('class');
         }
     }
 })();
