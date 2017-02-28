@@ -127,11 +127,13 @@
         vm.notSelected = notSelected;
         vm.removeStudant = removeStudant;
         vm.someoneStudant = someoneStudant;
-        vm.studants = [];
+        vm.studants = orderStudants(loginFactory.getUser().studants);
         vm.sweep = sweep;
 
         vm.$onInit = function(){
-            vm.studants = orderStudants(loginFactory.getUser().studants);
+            if(!vm.studants){
+                vm.studants = [];
+            }
         }
 
         /* Private */
