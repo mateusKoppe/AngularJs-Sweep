@@ -52,6 +52,7 @@
         vm.someoneStudant = someoneStudant;
         vm.studants = orderStudants(loginFactory.getUser().studants);
         vm.sweep = sweep;
+        vm.toggleSelecteds = toggleSelecteds;
 
 
         vm.$onInit = function(){
@@ -146,6 +147,19 @@
                 return studant;
             });
             vm.studants = orderStudants(vm.studants);
+        }
+        
+        function toggleSelecteds(studants, selected){
+            if(selected){
+                angular.copy({}, studants);
+            }else{
+                var i = 0;
+                var newSelect = {};
+                angular.forEach(vm.studants, function(studant){
+                    newSelect[i++] = true;
+                });
+                angular.copy(newSelect, studants);
+            }
         }
     }
 })();

@@ -78,11 +78,11 @@
                     </md-list-item>
                     <br>
                     <md-list-item>
-                        <md-checkbox ng-click="toggleAll()" ng-model="testfsda"></md-checkbox>
+                        <md-checkbox ng-click="vm.toggleSelecteds(vm.selectedStudantes, allSelecteds)" ng-model="allSelecteds"></md-checkbox>
                         <p><strong>Alunos</strong></p>
                         <p class="text-center"><strong>Varreu</strong></p>
                     </md-list-item>
-                    <md-list-item ng-repeat="studant in vm.studants">
+                    <md-list-item ng-repeat="studant in vm.studants" ng-init="vm.selectedStudantes = {}">
                         <md-checkbox ng-model="vm.selectedStudantes[$index]"></md-checkbox>
                         <p flex="75">{{studant.name}}</p>
                         <p flex="25">{{studant.times}}</p>
