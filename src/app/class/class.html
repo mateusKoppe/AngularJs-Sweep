@@ -15,9 +15,7 @@
                             </span>
                         </div>
                         <div flex="auto">
-                            <md-button flex="100" class="md-raised md-warn"
-                                ng-controller="SignController as signVm"
-                                ng-click="signVm.logout(vm.exit)">Sair</md-button>
+                            <md-button flex="100" class="md-raised md-warn" ng-controller="SignController as signVm" ng-click="signVm.logout(vm.exit)">Sair</md-button>
                         </div>
                     </div>
                 </md-card-title-text>
@@ -26,7 +24,7 @@
             <md-card-content>
 
                 <!-- Sweep -->
-                <section>
+                <section flex="90" flex-offset="5">
                     <h2>Quem vai varrer?</h2>
                     <div flex="80" flex-offset="10">
                         <div layout="row" layout-align="start center">
@@ -35,11 +33,7 @@
                                     <md-input-container flex="50">
                                         <label>Alunos</label>
                                         <md-select ng-model="swepper[0]">
-                                            <md-option
-                                               ng-selected="$index == 0"
-                                               ng-if="vm.notSelected(swepper[1], studant)"
-                                               ng-repeat="studant in vm.studants"
-                                               ng-value="studant">
+                                            <md-option ng-selected="$index == 0" ng-if="vm.notSelected(swepper[1], studant)" ng-repeat="studant in vm.studants" ng-value="studant">
                                                 {{studant.name}}
                                             </md-option>
                                         </md-select>
@@ -47,11 +41,7 @@
                                     <md-input-container flex="50">
                                         <label>Alunos</label>
                                         <md-select ng-model="swepper[1]">
-                                            <md-option
-                                               ng-selected="$index == 1"
-                                               ng-if="vm.notSelected(swepper[0], studant)"
-                                               ng-repeat="studant in vm.studants"
-                                               ng-value="studant">
+                                            <md-option ng-selected="$index == 1" ng-if="vm.notSelected(swepper[0], studant)" ng-repeat="studant in vm.studants" ng-value="studant">
                                                 {{studant.name}}
                                             </md-option>
                                         </md-select>
@@ -65,28 +55,32 @@
                     </div>
                 </section>
 
-                <section>
+                <section flex="90" flex-offset="5">
                     <h2>Alunos</h2>
-
                     <md-list-item>
                         <md-button class="md-raised md-accent" ng-click="vm.newStudantDialog($event)">Novo</md-button>
-                        <md-button class="md-raised md-primary"
-                            ng-if="vm.someoneStudant(vm.selectedStudantes)">Editar</md-button>
-                        <md-button class="md-raised md-warn"
-                            ng-if="vm.someoneStudant(vm.selectedStudantes)"
-                            ng-click="vm.removeStudant(vm.selectedStudantes)">Excluir</md-button>
+                        <md-button class="md-raised md-primary" ng-if="vm.someoneStudant(vm.selectedStudantes)">Editar</md-button>
+                        <md-button class="md-raised md-warn" ng-if="vm.someoneStudant(vm.selectedStudantes)" ng-click="vm.removeStudant(vm.selectedStudantes)">Excluir</md-button>
                     </md-list-item>
                     <br>
-                    <md-list-item>
-                        <md-checkbox ng-click="vm.toggleSelecteds(vm.selectedStudantes, allSelecteds)" ng-model="allSelecteds"></md-checkbox>
-                        <p><strong>Alunos</strong></p>
-                        <p class="text-center"><strong>Varreu</strong></p>
-                    </md-list-item>
-                    <md-list-item ng-repeat="studant in vm.studants" ng-init="vm.selectedStudantes = {}">
-                        <md-checkbox ng-model="vm.selectedStudantes[$index]"></md-checkbox>
-                        <p flex="75">{{studant.name}}</p>
-                        <p flex="25">{{studant.times}}</p>
-                    </md-list-item>
+                    <div flex="90" flex-offset="5">
+                        <md-input-container class="md-block">
+                            <label>Busca</label>
+                            <input ng-model="vm.searchStudant" required value="Nome da turma">
+                        </md-input-container>
+                    </div>
+                    <div>
+                        <md-list-item>
+                            <md-checkbox ng-click="vm.toggleSelecteds(vm.selectedStudantes, allSelecteds)" ng-model="allSelecteds"></md-checkbox>
+                            <p><strong>Alunos</strong></p>
+                            <p class="text-right"><strong>Varreu</strong></p>
+                        </md-list-item>
+                        <md-list-item ng-repeat="studant in vm.studants | filter: vm.searchStudant" ng-init="vm.selectedStudantes = {}">
+                            <md-checkbox ng-model="vm.selectedStudantes[$index]"></md-checkbox>
+                            <p flex="75">{{studant.name}}</p>
+                            <p flex="25" class="text-right">{{studant.times}}</p>
+                        </md-list-item>
+                    </div>
                 </section>
 
             </md-card-content>
