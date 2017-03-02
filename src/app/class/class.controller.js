@@ -10,6 +10,7 @@
     function ClassController(loginFactory, userFactory, $mdDialog, orderByFilter, $state) {
         var vm = this;
         vm.className = loginFactory.getUser().user_class;
+        vm.editStudantDialog = editStudantDialog;
         vm.exit = exit;
         vm.newStudantDialog = newStudantDialog;
         vm.notSelected = notSelected;
@@ -20,8 +21,8 @@
         vm.toggleSelecteds = toggleSelecteds;
 
 
-        vm.$onInit = function(){
-            if(!vm.studants){
+        vm.$onInit = function () {
+            if (!vm.studants) {
                 vm.studants = [];
             }
         }
@@ -30,20 +31,66 @@
         function exit() {
             $state.go('home');
         }
+
+        function convertSelectsStudants(selecteds){
+            var studantsKeys = [];
+            for (var key in selecteds) {
+                if (selecteds[key]) {
+                    studantsKeys.push(new Number(key));
+                }
+            }
+            var studantsSelects = [];
+            for (var key in studantsKeys) {
+                studantsSelects.push(vm.studants[studantsKeys[key]]);
+            }
+            return studantsSelects;
+        }
         
-        function orderStudants(studants){
-            studants = angular.forEach(studants, function(studant){
+        function orderStudants(studants) {
+            studants = angular.forEach(studants, function (studant) {
                 studant.times = new Number(studant.times);
             });
             return orderByFilter(studants, ['times', 'name']);
         }
 
-        function objectToArray(object){
+        function objectToArray(object) {
             var array = [];
             angular.forEach(object, function (item) {
                 array.push(item);
             });
             return array;
+        }
+
+        /* Publics */
+        function editStudantDialog($event, studants) {
+            var body = angular.element(document.body);
+            $mdDialog.show({
+                parent: body,
+                targetEvent: $event,
+                templateUrl: 'app/class/edit-studant-dialog.html',
+                locals: {
+                    studants: angular.copy(studants)
+                },
+                controller: EditStudantDialogController,
+                controllerAs: 'vm'
+            });
+
+            function EditStudantDialogController(studants, $mdDialog) {
+                var vm = this;
+                vm.close = close;
+                vm.editStudants = editStudants;
+                vm.studants = angular.copy(convertSelectsStudants(studants));
+
+                function close(){
+                    $mdDialog.hide();
+                }
+
+                function editStudants(studants) {
+                    console.log(studants);
+                }
+
+            }
+
         }
 
         /* Publics */
@@ -66,7 +113,7 @@
                     class: loginFactory.getUser().user_id,
                     name: result
                 };
-                userFactory.createStudant(data).then(function(result){
+                userFactory.createStudant(data).then(function (result) {
                     var studant = result.data;
                     vm.studants.push({
                         id: studant.studant_id,
@@ -78,25 +125,16 @@
             });
         };
 
-        function removeStudant(studants){
-            var studantsKeys = [];
-            for(var key in studants){
-                if(studants[key]){
-                    studantsKeys.push(new Number(key));
-                }
-            }
-            var studantsSelects = [];
-            for(var key in studantsKeys){
-                studantsSelects.push(vm.studants[studantsKeys[key]]);
-            }
-            userFactory.removeStudants(studantsSelects).then(function(){
-               vm.studants = vm.studants.filter(function(studant){
+        function removeStudant(studants) {
+            var studantsSelects = convertSelectsStudants(studants);
+            userFactory.removeStudants(studantsSelects).then(function () {
+                vm.studants = vm.studants.filter(function (studant) {
                     return studantsSelects.indexOf(studant) == -1;
                 });
             });
         }
 
-        function someoneStudant(studants){
+        function someoneStudant(studants) {
             studants = objectToArray(studants);
             return studants && studants.indexOf(true) != -1;
         }
@@ -113,14 +151,14 @@
             });
             vm.studants = orderStudants(vm.studants);
         }
-        
-        function toggleSelecteds(studants, selected){
-            if(selected){
+
+        function toggleSelecteds(studants, selected) {
+            if (selected) {
                 angular.copy({}, studants);
-            }else{
+            } else {
                 var i = 0;
                 var newSelect = {};
-                angular.forEach(vm.studants, function(studant){
+                angular.forEach(vm.studants, function (studant) {
                     newSelect[i++] = true;
                 });
                 angular.copy(newSelect, studants);

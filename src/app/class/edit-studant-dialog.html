@@ -1,0 +1,20 @@
+<md-dialog flex="60" class="basic-template-dialog" aria-label="List dialog">
+    <md-dialog-content>
+        <md-list>
+            <md-list-item ng-repeat="studant in vm.studants">
+                <md-input-container class="md-block" flex="100" ng-init="vm.studantEdit = {}">
+                    <label>{{::studant.name}}</label>
+                    <input ng-model="studant.name">
+                </md-input-container>
+            </md-list-item>
+        </md-list>
+    </md-dialog-content>
+    <md-dialog-actions>
+        <md-button class="md-warn" ng-click="vm.close()">
+            Cancelar
+        </md-button>
+        <md-button ng-click="vm.editStudants(vm.studants)" class="md-primary">
+            Concluido
+        </md-button>
+    </md-dialog-actions>
+</md-dialog>

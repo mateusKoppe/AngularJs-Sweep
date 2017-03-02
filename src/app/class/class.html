@@ -3,7 +3,7 @@
 
     <section flex="100" flex-xs="100">
         <!-- Content -->
-        <md-card class="md-whiteframe-3dp">
+        <md-card class="md-whiteframe-3dp content">
             <md-card-title>
 
                 <!-- Header -->
@@ -59,14 +59,18 @@
                     <h2>Alunos</h2>
                     <md-list-item>
                         <md-button class="md-raised md-accent" ng-click="vm.newStudantDialog($event)">Novo</md-button>
-                        <md-button class="md-raised md-primary" ng-if="vm.someoneStudant(vm.selectedStudantes)">Editar</md-button>
-                        <md-button class="md-raised md-warn" ng-if="vm.someoneStudant(vm.selectedStudantes)" ng-click="vm.removeStudant(vm.selectedStudantes)">Excluir</md-button>
+                        <md-button class="md-raised md-primary"
+                            ng-if="vm.someoneStudant(vm.selectedStudantes)"
+                            ng-click="vm.editStudantDialog($event, vm.selectedStudantes)">Editar</md-button>
+                        <md-button class="md-raised md-warn"
+                            ng-if="vm.someoneStudant(vm.selectedStudantes)"
+                            ng-click="vm.removeStudant(vm.selectedStudantes)">Excluir</md-button>
                     </md-list-item>
                     <br>
                     <div flex="90" flex-offset="5">
                         <md-input-container class="md-block">
                             <label>Busca</label>
-                            <input ng-model="vm.searchStudant" required value="Nome da turma">
+                            <input ng-model="vm.searchStudant">
                         </md-input-container>
                     </div>
                     <div>

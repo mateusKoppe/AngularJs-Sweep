@@ -53,7 +53,6 @@
                 studants: studants,
                 action: "removeStudant"
             };
-            console.log(data);
             return $http.post(variables.urlApi + fileApi, data);
         }
 
