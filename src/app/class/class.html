@@ -33,7 +33,7 @@
                                     <md-input-container flex="50">
                                         <label>Alunos</label>
                                         <md-select ng-model="swepper[0]">
-                                            <md-option ng-selected="$index == 0" ng-if="vm.notSelected(swepper[1], studant)" ng-repeat="studant in vm.studants" ng-value="studant">
+                                            <md-option ng-selected="$index == 0" ng-if="vm.notSelected(swepper[1], studant)" ng-repeat="studant in vm.studants track by studant.id" ng-value="studant">
                                                 {{studant.name}}
                                             </md-option>
                                         </md-select>
@@ -41,7 +41,7 @@
                                     <md-input-container flex="50">
                                         <label>Alunos</label>
                                         <md-select ng-model="swepper[1]">
-                                            <md-option ng-selected="$index == 1" ng-if="vm.notSelected(swepper[0], studant)" ng-repeat="studant in vm.studants" ng-value="studant">
+                                            <md-option ng-selected="$index == 1" ng-if="vm.notSelected(swepper[0], studant)" ng-repeat="studant in vm.studants track by studant.id" ng-value="studant">
                                                 {{studant.name}}
                                             </md-option>
                                         </md-select>
