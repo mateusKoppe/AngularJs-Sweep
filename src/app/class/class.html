@@ -61,7 +61,7 @@
                         <md-button class="md-raised md-accent" ng-click="vm.newStudantDialog($event)">Novo</md-button>
                         <md-button class="md-raised md-primary"
                             ng-if="vm.someoneStudant(vm.selectedStudantes)"
-                            ng-click="vm.editStudantDialog($event, vm.selectedStudantes)">Editar</md-button>
+                            ng-click="vm.editStudantDialog($event, vm.selectedStudantes, vm.editStudants)">Editar</md-button>
                         <md-button class="md-raised md-warn"
                             ng-if="vm.someoneStudant(vm.selectedStudantes)"
                             ng-click="vm.removeStudant(vm.selectedStudantes)">Excluir</md-button>
@@ -79,7 +79,7 @@
                             <p><strong>Alunos</strong></p>
                             <p class="text-right"><strong>Varreu</strong></p>
                         </md-list-item>
-                        <md-list-item ng-repeat="studant in vm.studants | filter: vm.searchStudant" ng-init="vm.selectedStudantes = {}">
+                        <md-list-item ng-repeat="studant in vm.studants track by studant.id | filter: vm.searchStudant" ng-init="vm.selectedStudantes = {}">
                             <md-checkbox ng-model="vm.selectedStudantes[$index]"></md-checkbox>
                             <p flex="75">{{studant.name}}</p>
                             <p flex="25" class="text-right">{{studant.times}}</p>

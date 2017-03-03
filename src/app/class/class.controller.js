@@ -10,6 +10,7 @@
     function ClassController(loginFactory, userFactory, $mdDialog, orderByFilter, $state) {
         var vm = this;
         vm.className = loginFactory.getUser().user_class;
+        vm.editStudants = editStudants;
         vm.editStudantDialog = editStudantDialog;
         vm.exit = exit;
         vm.newStudantDialog = newStudantDialog;
@@ -32,7 +33,7 @@
             $state.go('home');
         }
 
-        function convertSelectsStudants(selecteds){
+        function convertSelectsStudants(selecteds) {
             var studantsKeys = [];
             for (var key in selecteds) {
                 if (selecteds[key]) {
@@ -45,7 +46,7 @@
             }
             return studantsSelects;
         }
-        
+
         function orderStudants(studants) {
             studants = angular.forEach(studants, function (studant) {
                 studant.times = new Number(studant.times);
@@ -62,31 +63,38 @@
         }
 
         /* Publics */
-        function editStudantDialog($event, studants) {
+        function editStudantDialog($event, studants, callback) {
             var body = angular.element(document.body);
             $mdDialog.show({
                 parent: body,
                 targetEvent: $event,
                 templateUrl: 'app/class/edit-studant-dialog.html',
                 locals: {
-                    studants: angular.copy(studants)
+                    editStudants: angular.copy(studants),
+                    callback: callback
                 },
                 controller: EditStudantDialogController,
                 controllerAs: 'vm'
             });
 
-            function EditStudantDialogController(studants, $mdDialog) {
+            EditStudantDialogController.$inject = ['editStudants', 'callback', '$mdDialog', 'userFactory'];
+
+            function EditStudantDialogController(editStudants, callback, $mdDialog, userFactory) {
                 var vm = this;
                 vm.close = close;
                 vm.editStudants = editStudants;
+                vm.callbackEditStudant = callback;
                 vm.studants = angular.copy(convertSelectsStudants(studants));
 
-                function close(){
+                function close() {
                     $mdDialog.hide();
                 }
 
-                function editStudants(studants) {
-                    console.log(studants);
+                function editStudants(editStudants, callback) {
+
+                    userFactory.editStudants(editStudants).then(function (result) {
+                        callback(editStudants);
+                    });
                 }
 
             }
@@ -94,6 +102,18 @@
         }
 
         /* Publics */
+        function editStudants(studants) {
+            vm.studants = vm.studants.map(function (studant) {
+                studants.forEach(function (editStudant) {
+                    if (editStudant.id == studant.id) {
+                        studant = editStudant;
+                    }
+                });
+                return studant;
+            });
+            $mdDialog.hide();
+        }
+
         function notSelected(swepper, value) {
             return swepper != value;
         }
@@ -129,6 +149,7 @@
             var studantsSelects = convertSelectsStudants(studants);
             userFactory.removeStudants(studantsSelects).then(function () {
                 vm.studants = vm.studants.filter(function (studant) {
+                    angular.copy({}, studants);
                     return studantsSelects.indexOf(studant) == -1;
                 });
             });

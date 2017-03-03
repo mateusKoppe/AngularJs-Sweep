@@ -108,3 +108,18 @@ if($data->action === 'removeStudant'){
     }
     echo $conn->query($sql)->rowCount() == 0;
 }
+
+if($data->action === 'editStudants'){
+    $studants = $data->studants;
+    $success = true;
+    foreach($studants as $studant){
+        $sql = "UPDATE studants SET";
+        foreach($studant as $key => $attrs){
+            $sql .= " studant_$key = '$attrs',";
+        }
+        $sql .= "#WHERE studant_id = $studant->id ;";
+        $sql = str_replace(",#", " ", $sql);
+        $success =  ($conn->query($sql)->rowCount() == 0) && $success;
+    };
+    echo $success;
+}

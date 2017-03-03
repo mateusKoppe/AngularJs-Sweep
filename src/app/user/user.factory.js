@@ -13,6 +13,7 @@
             checkAvailability: checkAvailability,
             create: create,
             createStudant: createStudant,
+            editStudants: editStudants,
             defineClassName: defineClassName,
             login: login,
             removeStudants: removeStudants,
@@ -34,6 +35,14 @@
 
         function createStudant(data){
             data.action = "createStudant";
+            return $http.post(variables.urlApi + fileApi, data);
+        }
+
+        function editStudants(studants){
+            var data = {
+                action: 'editStudants',
+                studants: studants
+            };
             return $http.post(variables.urlApi + fileApi, data);
         }
 
