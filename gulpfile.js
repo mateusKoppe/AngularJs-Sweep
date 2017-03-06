@@ -10,7 +10,15 @@ var gulp = require('gulp'),
     autoprefixer = require('gulp-autoprefixer'),
     browserSync = require('browser-sync').create();
 
-gulp.task('server', ['watchs'] ,function () {
+gulp.task('develop', ['watchs'] ,function () {
+    browserSync.init({
+        server: {
+            baseDir: "./src/"
+        }
+    });
+});
+
+gulp.task('server',function () {
     browserSync.init({
         server: {
             baseDir: "./src/"
