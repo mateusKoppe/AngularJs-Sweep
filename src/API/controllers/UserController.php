@@ -1,11 +1,12 @@
 <?php
 
+require_once 'model/UserModel.php';
+require_once 'controllers/Controller.php';
+
 $request_body = file_get_contents('php://input');
 $data = json_decode($request_body);
 
-$DBTable = "users";
-
-class UserController
+class UserController extends Controller
 {
     public function create()
     {
@@ -54,9 +55,9 @@ class UserController
 
     public function checkAvailability()
     {
-        $username = filterValue($data->username);
-        $sql = "SELECT user_id FROM $DBTable WHERE user_username = '$username'";
-        echo $conn->query($sql)->rowCount() == 0;
+        $username = filterValue($_GET['username']);
+        $someUserCreated = UserModel::isAvailabilable($username);
+        $this->json(['available' => !$someUserCreated], $someUserCreated?203:201);
     }
 
     public function defineClass()
