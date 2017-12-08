@@ -12,5 +12,5 @@ $controller_file = "controllers/$controller.php";
 
 require_once $controller_file;
 
-$controller = new Controller();
-$controller->action();
+$controller = new $controller();
+$controller->$action();
