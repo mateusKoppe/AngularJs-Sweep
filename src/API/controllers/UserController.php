@@ -3,22 +3,15 @@
 require_once 'model/UserModel.php';
 require_once 'controllers/Controller.php';
 
-$request_body = file_get_contents('php://input');
-$data = json_decode($request_body);
-
 class UserController extends Controller
 {
+
     public function create()
     {
-        $username = filterValue($data->username);
-        $password = filterValue($data->password);
-        $sqlSelect = "SELECT user_id from $DBTable WHERE user_username = '$username' and user_password='$password'";
-        if(!$conn->query($sqlSelect)->rowCount()){
-          $sqlInsert = "INSERT INTO $DBTable (user_username, user_password) VALUES ('$username','$password')";
-          echo $conn->exec($sqlInsert);
-        }else{
-          echo "login_existente";
-        }
+        $user = new UserModel();
+        $user->username = $this->body->username;
+        $user->password = $this->body->password;
+        echo $user->save();
     }
 
     public function login()
