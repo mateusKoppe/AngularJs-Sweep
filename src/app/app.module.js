@@ -9,8 +9,8 @@
         'app.user',
         'app.class'
     ])
-    .value('variables', 
-        "urlApi": 'http://localhost/sweep/API/',
-    });;
+    .value('variables', {
+        "urlApi": 'http://localhost/sweep-manager/src/API',
+    });
 
 })();
