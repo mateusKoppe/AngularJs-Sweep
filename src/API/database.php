@@ -1,9 +1,16 @@
 <?php
-    $connConfig = [
-        'host' => 'localhost',
-        'database' => 'sweep',
-        'user' => 'root',
-        'password' => 'root'
-    ];
 
-    $conn = new PDO('mysql:host='.$connConfig['host'].';dbname='.$connConfig['database'],$connConfig['user'],$connConfig['password']);
+class Database
+{
+    public static $HOST = 'localhost';
+    public static $NAME = 'sweep';
+    public static $USER = 'root';
+    public static $PASSWORD = 'root';
+    public static $CONN;
+
+    public static function createConnection()
+    {
+      SELF::$CONN = new PDO('mysql:host='. SELF::$HOST .';dbname='. SELF::$NAME, SELF::$USER, SELF::$PASSWORD);
+      return SELF::$CONN;
+    }
+}
