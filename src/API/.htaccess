@@ -1,3 +1,4 @@
 RewriteEngine On
 
-RewriteRule ^user$ user.php [NC]
+RewriteRule ^user/checkAvailability/(.*)$  UserController.php?action=checkAvailability&username=$1 [NC]
+RewriteRule ^user$ UserController.php [NC]
