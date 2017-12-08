@@ -5,7 +5,7 @@ header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Ac
 require_once "functions.php";
 
 $controller = $_GET["controller"];
-$action = $_GET["action"];
+$action = isset($_GET["action"])?$_GET["action"]:getMethodAction();
 
 $controller = ucfirst($controller) . "Controller";
 $controller_file = "controllers/$controller.php";
