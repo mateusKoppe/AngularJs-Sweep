@@ -1,6 +1,6 @@
 <div class="inset"></div>
 <div layout="row" layout-xs="column" flex="90" flex-offset="5">
-  
+
    <section flex="60" flex-xs="100">
         <!-- Content -->
         <md-card class="md-whiteframe-3dp">
@@ -17,7 +17,7 @@
             </md-card-content>
         </md-card>
     </section>
-    
+
     <section flex="40" flex-xs="100">
 
         <!-- LOGIN -->
@@ -29,9 +29,9 @@
                 </md-card-title-text>
             </md-card-title>
             <md-card-content layout-align="space-between">
-                
+
                 <!-- Form -->
-                <form name="loginForm" 
+                <form name="loginForm"
                    ng-controller="SignController as signVm"
                    ng-submit="signVm.login(login, 'loginForm', homeVm.userLogged)">
                     <div layout-gt-sm="row" layout="column">
@@ -61,14 +61,14 @@
 
                 <!-- SingIn -->
                 <md-card-actions flex="100" layout="row">
-                    <p>Ainda não tem uma conta? <a class="md-primary pointer" ng-click="homeVm.setAction('singin')">Cadastre a sua turma agora!</a></p>
+                    <p>Ainda não tem uma conta? <a class="md-primary pointer" ng-click="homeVm.setAction('singup')">Cadastre a sua turma agora!</a></p>
                 </md-card-actions>
             </md-card-content>
         </md-card>
 
         <!-- SIGNIN -->
-        <md-card ng-show="homeVm.isAction('singin')" class="md-whiteframe-3dp">
-            
+        <md-card ng-show="homeVm.isAction('singup')" class="md-whiteframe-3dp">
+
             <!-- Form -->
             <form name="signinForm"
                ng-controller="SignController as signVm"
@@ -120,7 +120,7 @@
                     <!-- Button -->
                     <md-card-actions flex="100" layout="row">
                         <md-button class="md-raised md-accent" type="submit"
-                           ng-click="homeVm.userCreate(homeVm.signin)" 
+                           ng-click="homeVm.userCreate(homeVm.signin)"
                            ng-disabled="signinForm.$invalid">
                             Cadastro
                         </md-button>

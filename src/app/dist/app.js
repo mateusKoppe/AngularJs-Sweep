@@ -330,7 +330,6 @@
 
     passwordCheck.$inject = [];
 
-    /* @ngInject */
     function passwordCheck() {
         var directive = {
             require: 'ngModel',
@@ -567,17 +566,18 @@
 
         function link(scope, element, attrs, controller) {
             controller.$asyncValidators.username = function (modelValue, viewValue) {
-                
+
                 var defer = $q.defer();
-                
-                userFactory.checkAvailability(modelValue).then(function (result) {
-                    if(result.data){
-                        defer.resolve();
-                    }else{
-                        defer.reject();
-                    }
-                })
-                
+
+                userFactory.checkAvailability(modelValue)
+                  .then(function (result) {
+                      if(result.data.available){
+                          defer.resolve();
+                      }else{
+                          defer.reject();
+                      }
+                  })
+
                 return defer.promise;
             };
         }

@@ -7,7 +7,6 @@
 
     passwordCheck.$inject = [];
 
-    /* @ngInject */
     function passwordCheck() {
         var directive = {
             require: 'ngModel',
