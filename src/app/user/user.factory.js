@@ -20,17 +20,17 @@
         return service;
 
         function checkAvailability(username) {
-            return $http.get(variables.urlApi + '/user/checkAvailability/' + username);
+            return $http.get(variables.urlApi + '/users/checkAvailability/' + username);
         };
 
         function create(data) {
             data.action = "create";
-            return $http.post(variables.urlApi + '/user', data);
+            return $http.post(variables.urlApi + '/users', data);
         };
 
         function createStudant(data){
             data.action = "createStudant";
-            return $http.post(variables.urlApi + '/user', data);
+            return $http.post(variables.urlApi + '/users', data);
         }
 
         function editStudants(studants){
@@ -38,18 +38,18 @@
                 action: 'editStudants',
                 studants: studants
             };
-            return $http.post(variables.urlApi + '/user', data);
+            return $http.post(variables.urlApi + '/users', data);
         }
 
         function defineClassName(data) {
             data.action = "defineClass";
             data.id = loginFactory.getUser().user_id;
-            return $http.post(variables.urlApi + '/user', data);
+            return $http.post(variables.urlApi + '/users', data);
         }
 
         function login(data) {
             data.action = "login";
-            return $http.post(variables.urlApi + '/user', data);
+            return $http.post(variables.urlApi + '/users', data);
         };
 
         function removeStudants(studants){
@@ -57,14 +57,14 @@
                 studants: studants,
                 action: "removeStudant"
             };
-            return $http.post(variables.urlApi + '/user', data);
+            return $http.post(variables.urlApi + '/users', data);
         }
 
         function sweep(studants) {
             var data = {};
             data.action = "sweep";
             data.studants = studants;
-            return $http.post(variables.urlApi + '/user', data);
+            return $http.post(variables.urlApi + '/users', data);
         };
 
 
