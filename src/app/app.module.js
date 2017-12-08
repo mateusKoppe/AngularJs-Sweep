@@ -1,6 +1,6 @@
 (function(){
     'use strick';
-    
+
     angular.module('app', [
         'ngMaterial',
         'ngMessages',
@@ -9,9 +9,8 @@
         'app.user',
         'app.class'
     ])
-    .value('variables', {
-        "urlBase": 'http://localhost:3000',
+    .value('variables', 
         "urlApi": 'http://localhost/sweep/API/',
     });;
-    
+
 })();
