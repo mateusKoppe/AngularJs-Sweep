@@ -33,4 +33,13 @@ class UserModel
         $sth->bindParam(':classId', $this->classId);
         return $sth->execute();
     }
+
+    public function getContentData()
+    {
+        return [
+            'username' => $this->username,
+            'password' => $this->password,
+            'classId' => $this->classId,
+        ];
+    }
 }

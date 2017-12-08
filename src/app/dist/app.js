@@ -435,29 +435,29 @@
 
     SignController.$inject = ['$rootScope', '$scope','userFactory', 'loginFactory'];
     function SignController($rootScope, $scope, userFactory, loginFactory){
-        var vm = this;        
+        var vm = this;
         vm.create = create;
         vm.login = login;
         vm.logout = logout;
-        
+
         function create(user, form, success, error){
             var userData = angular.copy(user);
-            angular.copy({}, user)
+            angular.copy({}, user);
             userFactory.create(userData).then(function(result){
-                if($scope[form]){ 
+                if($scope[form]){
                     $scope[form].$setUntouched();
                     $scope[form].$setPristine();
                 }
                 success(userData);
             });
         }
-        
+
         function login(user, form, success, error){
             var userData = angular.copy(user);
             angular.copy({}, user)
             userFactory.login(userData).then(function(result){
                 if(result.data){
-                    if($scope[form]){ 
+                    if($scope[form]){
                         $scope[form].$setUntouched();
                         $scope[form].$setPristine();
                     }
@@ -500,7 +500,6 @@
         };
 
         function create(data) {
-            data.action = "create";
             return $http.post(variables.urlApi + '/users', data);
         };
 
@@ -524,8 +523,7 @@
         }
 
         function login(data) {
-            data.action = "login";
-            return $http.post(variables.urlApi + '/users', data);
+            return $http.post(variables.urlApi + '/login', data);
         };
 
         function removeStudants(studants){

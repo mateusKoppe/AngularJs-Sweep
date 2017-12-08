@@ -11,7 +11,12 @@ class UserController extends Controller
         $user = new UserModel();
         $user->username = $this->body->username;
         $user->password = $this->body->password;
-        echo $user->save();
+        $success = $user->save();
+        if($success){
+            $this->json($user->getContentData(), 201);
+        } else {
+            $this->json(null, 400);
+        }
     }
 
     public function login()

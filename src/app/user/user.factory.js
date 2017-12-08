@@ -24,7 +24,6 @@
         };
 
         function create(data) {
-            data.action = "create";
             return $http.post(variables.urlApi + '/users', data);
         };
 
@@ -48,8 +47,7 @@
         }
 
         function login(data) {
-            data.action = "login";
-            return $http.post(variables.urlApi + '/users', data);
+            return $http.post(variables.urlApi + '/login', data);
         };
 
         function removeStudants(studants){

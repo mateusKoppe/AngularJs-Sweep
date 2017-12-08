@@ -72,7 +72,7 @@
             <!-- Form -->
             <form name="signinForm"
                ng-controller="SignController as signVm"
-               ng-submit="signVm.create(signin, 'signinForm',homeVm.userCreated)">
+               ng-submit="signVm.create(signin, 'signinForm', homeVm.userCreated)">
                 <md-card-title>
                     <md-card-title-text>
                         <span class="md-headline">Cadastre sua turma</span>
@@ -120,7 +120,6 @@
                     <!-- Button -->
                     <md-card-actions flex="100" layout="row">
                         <md-button class="md-raised md-accent" type="submit"
-                           ng-click="homeVm.userCreate(homeVm.signin)"
                            ng-disabled="signinForm.$invalid">
                             Cadastro
                         </md-button>
