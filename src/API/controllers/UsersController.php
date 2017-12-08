@@ -1,8 +1,5 @@
 <?php
 
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
-
 require_once '../database.php';
 require_once '../functions.php';
 
