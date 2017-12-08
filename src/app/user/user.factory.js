@@ -7,8 +7,6 @@
     userFactory.$inject = ['$http', 'variables', '$location', 'loginFactory'];
 
     function userFactory($http, variables, $location, loginFactory) {
-        var fileApi = "user.php";
-
         var service = {
             checkAvailability: checkAvailability,
             create: create,
@@ -22,10 +20,7 @@
         return service;
 
         function checkAvailability(username) {
-            var data = {};
-            data.action = "checkAvailability";
-            data.username = username || "";
-            return $http.post(variables.urlApi + '/user', data);
+            return $http.get(variables.urlApi + '/user/checkAvailability/' + username);
         };
 
         function create(data) {
