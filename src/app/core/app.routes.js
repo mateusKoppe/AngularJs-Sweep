@@ -4,8 +4,7 @@
     angular
         .module('app')
         .config(routes)
-    
-    routes.$inject = ['$locationProvider', '$stateProvider', '$urlRouterProvider'];
+
     function routes ($locationProvider, $stateProvider, $urlRouterProvider) {
         $stateProvider
             .state({
@@ -13,9 +12,9 @@
                 url: '/',
                 controller: "homeController",
                 controllerAs: "homeVm",
-                templateUrl: "app/pages/home.html" 
+                templateUrl: "app/pages/home.html"
             });
         $urlRouterProvider.otherwise('/');
     }
-    
+
 })();

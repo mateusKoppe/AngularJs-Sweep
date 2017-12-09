@@ -36,11 +36,10 @@
 (function () {
     'use strict';
 
+    ClassController.$inject = ["loginFactory", "userFactory", "$mdDialog", "orderByFilter", "$state"];
     angular
         .module('app.class')
         .controller('ClassController', ClassController);
-
-    ClassController.$inject = ['loginFactory', 'userFactory', '$mdDialog', 'orderByFilter', '$state'];
 
     function ClassController(loginFactory, userFactory, $mdDialog, orderByFilter, $state) {
         var vm = this;
@@ -226,11 +225,11 @@
 (function(){
     'use strict';
 
+        routes.$inject = ["$stateProvider"];
     angular
         .module('app.class')
         .config(routes)
 
-        routes.$inject = ['$stateProvider'];
         function routes($stateProvider){
             $stateProvider
                 .state('class', {
@@ -262,11 +261,10 @@
 (function () {
     'use strict';
 
+    FirstTimeController.$inject = ["userFactory", "loginFactory", "$state"];
     angular
         .module('app.class')
         .controller('FirstTimeController', FirstTimeController);
-
-    FirstTimeController.$inject = ['userFactory', 'loginFactory', '$state'];
 
     function FirstTimeController(userFactory, loginFactory, $state) {
         var vm = this;
@@ -286,11 +284,11 @@
 (function(){
     'use strick';
 
+    routes.$inject = ["$locationProvider", "$stateProvider", "$urlRouterProvider"];
     angular
         .module('app')
         .config(routes)
-    
-    routes.$inject = ['$locationProvider', '$stateProvider', '$urlRouterProvider'];
+
     function routes ($locationProvider, $stateProvider, $urlRouterProvider) {
         $stateProvider
             .state({
@@ -298,20 +296,20 @@
                 url: '/',
                 controller: "homeController",
                 controllerAs: "homeVm",
-                templateUrl: "app/pages/home.html" 
+                templateUrl: "app/pages/home.html"
             });
         $urlRouterProvider.otherwise('/');
     }
-    
+
 })();
+
 (function () {
     'use strict';
 
+    materialTheme.$inject = ["$mdThemingProvider"];
     angular
         .module('app')
         .config(materialTheme)
-
-    materialTheme.$inject = ['$mdThemingProvider'];
 
     function materialTheme($mdThemingProvider) {
         $mdThemingProvider
@@ -327,8 +325,6 @@
     angular
         .module('app')
         .directive('passwordCheck', passwordCheck);
-
-    passwordCheck.$inject = [];
 
     function passwordCheck() {
         var directive = {
@@ -352,34 +348,34 @@
 (function() {
     'use strict';
 
+    homeController.$inject = ["$state", "loginFactory", "userFactory"];
     angular
         .module('app')
         .controller('homeController', homeController);
 
-    homeController.$inject = ['$state','loginFactory', 'userFactory'];
     function homeController($state, loginFactory, userFactory){
-        var vm = this;            
-        
+        var vm = this;
+
         //Variables
         vm.signin = {};
         vm.isUserAvailability = 1;
-        vm.userAction = 'login';  
-        
+        vm.userAction = 'login';
+
         //Functions
         vm.isAction = isAction;
         vm.setAction = setAction;
         vm.userCreated = userCreated;
         vm.userLogged = userLogged;
-        
+
         //Publics
         function isAction(action){
             return vm.userAction === action;
         }
-        
+
         function setAction(action){
             vm.userAction = action;
         }
-        
+
         function userCreated(user){
             userFactory.login(user).then(function(result){
                 userLogged(result.data);
@@ -389,36 +385,35 @@
         function userLogged(){
             $state.go("class");
         }
-        
+
     }
 })();
 
 (function(){
     'use strict';
-    
+
     angular
         .module('app.user')
         .factory('loginFactory', loginFactory);
-    
-    loginFactory.$inject = [];
+
     function loginFactory(){
         var user = false;
-        
+
         var service = {
             getUser: getUser,
             setUser: setUser,
             cleanUser: cleanUser
         }
         return service;
-        
+
         function getUser(){
             return user;
         }
-        
+
         function setUser(newUser){
             user = newUser;
         }
-        
+
         function cleanUser(){
             setUser(false);
         }
@@ -429,11 +424,11 @@
 (function() {
     'use strict';
 
+    SignController.$inject = ["$rootScope", "$scope", "userFactory", "loginFactory"];
     angular
         .module('app.user')
         .controller('SignController', SignController);
 
-    SignController.$inject = ['$rootScope', '$scope','userFactory', 'loginFactory'];
     function SignController($rootScope, $scope, userFactory, loginFactory){
         var vm = this;
         vm.create = create;
@@ -476,11 +471,10 @@
 
 (function () {
     'use strict';
+    userFactory.$inject = ["$http", "variables", "$location", "loginFactory"];
     angular
         .module('app.user')
         .service('userFactory', userFactory);
-
-    userFactory.$inject = ['$http', 'variables', '$location', 'loginFactory'];
 
     function userFactory($http, variables, $location, loginFactory) {
         var service = {
@@ -548,11 +542,10 @@
 (function () {
     'use strict';
 
+    username.$inject = ["userFactory", "$timeout", "$q"];
     angular
         .module('app.user')
         .directive('username', username);
-
-    username.$inject = ['userFactory', '$timeout', '$q'];
 
     function username(userFactory, $timeout, $q) {
         var directive = {

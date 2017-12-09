@@ -5,8 +5,6 @@
         .module('app.user')
         .directive('username', username);
 
-    username.$inject = ['userFactory', '$timeout', '$q'];
-
     function username(userFactory, $timeout, $q) {
         var directive = {
             require: 'ngModel',

@@ -4,8 +4,6 @@
         .module('app.user')
         .service('userFactory', userFactory);
 
-    userFactory.$inject = ['$http', 'variables', '$location', 'loginFactory'];
-
     function userFactory($http, variables, $location, loginFactory) {
         var service = {
             checkAvailability: checkAvailability,

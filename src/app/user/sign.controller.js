@@ -5,7 +5,6 @@
         .module('app.user')
         .controller('SignController', SignController);
 
-    SignController.$inject = ['$rootScope', '$scope','userFactory', 'loginFactory'];
     function SignController($rootScope, $scope, userFactory, loginFactory){
         var vm = this;
         vm.create = create;

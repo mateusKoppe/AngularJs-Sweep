@@ -5,8 +5,6 @@
         .module('app.class')
         .controller('FirstTimeController', FirstTimeController);
 
-    FirstTimeController.$inject = ['userFactory', 'loginFactory', '$state'];
-
     function FirstTimeController(userFactory, loginFactory, $state) {
         var vm = this;
         vm.setClass = setClass;

@@ -5,8 +5,6 @@
         .module('app')
         .directive('passwordCheck', passwordCheck);
 
-    passwordCheck.$inject = [];
-
     function passwordCheck() {
         var directive = {
             require: 'ngModel',

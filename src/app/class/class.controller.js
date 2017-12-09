@@ -5,8 +5,6 @@
         .module('app.class')
         .controller('ClassController', ClassController);
 
-    ClassController.$inject = ['loginFactory', 'userFactory', '$mdDialog', 'orderByFilter', '$state'];
-
     function ClassController(loginFactory, userFactory, $mdDialog, orderByFilter, $state) {
         var vm = this;
         vm.className = loginFactory.getUser().user_class;

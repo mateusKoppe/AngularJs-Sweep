@@ -5,7 +5,6 @@
         .module('app.class')
         .config(routes)
 
-        routes.$inject = ['$stateProvider'];
         function routes($stateProvider){
             $stateProvider
                 .state('class', {
