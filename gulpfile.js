@@ -8,6 +8,7 @@ var gulp = require('gulp'),
     sass = require('gulp-sass'),
     cleanCSS = require('gulp-clean-css'),
     autoprefixer = require('gulp-autoprefixer'),
+    ngAnnotate = require('gulp-ng-annotate'),
     browserSync = require('browser-sync').create();
 
 gulp.task('develop', ['watchs'] ,function () {
@@ -39,13 +40,14 @@ gulp.task('javascript-watch', ['javascript'], function(){
 });
 
 /**  Basic functions **/
-gulp.task('javascript', function () {    
+gulp.task('javascript', function () {
     gulp.src(['./src/app/**/*.js', '!**/dist/**.js'])
         .pipe(sourcemaps.init())
-        .pipe(order([   
+        .pipe(order([
             '**/*.module.js',
             '**/*.js'
         ]))
+        .pipe(ngAnnotate())
         .pipe(concat('app.js'))
         .pipe(sourcemaps.write('./'))
         .pipe(gulp.dest('./src/app/dist'));
