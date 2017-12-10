@@ -39,6 +39,26 @@ class UserModel
         return $success;
     }
 
+    public static function login($username, $password)
+    {
+        $sql = "SELECT * FROM " . SELF::$dbTable . " WHERE user_username = :username AND user_password = :password";
+        $conn = Database::createConnection();
+        $sth = $conn->prepare($sql);
+        $sth->bindParam(':username', $username);
+        $sth->bindParam(':password', $password);
+        $sth->execute();
+        $user_row = $sth->fetch(PDO::FETCH_OBJ);
+        if($user_row){
+            $user = new UserModel();
+            $user->id = $user_row->user_id;
+            $user->username = $user_row->user_username;
+            $user->class = $user_row->user_class;
+            return $user;
+        }else{
+            return false;
+        }
+    }
+
     public function getContentData()
     {
         return [
