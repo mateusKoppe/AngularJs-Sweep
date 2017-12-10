@@ -12,22 +12,22 @@
                     templateUrl: 'app/class/class.html',
                     controller: 'ClassController',
                     controllerAs: 'vm',
-                    onEnter: ['$state', 'loginFactory',function($state, loginFactory){
+                    onEnter: function($state, loginFactory){
                         if(loginFactory.getUser() == {}) $state.go("home");
                         if(!loginFactory.getUser().user_id) $state.go("home");
                         if(!loginFactory.getUser().user_class) $state.go("firstTime");
-                    }]
+                    }
                 })
                 .state('firstTime', {
                     url: '/turma/primeiravisita',
                     templateUrl: 'app/class/first-time.html',
                     controller: 'FirstTimeController',
                     controllerAs: 'vm',
-                    onEnter: ['$state', 'loginFactory',function($state, loginFactory){
+                    onEnter: function($state, loginFactory){
                         if(loginFactory.getUser() == {}) $state.go("home");
                         if(!loginFactory.getUser().user_id) $state.go("home");
                         if(loginFactory.getUser().user_class) $state.go("class");
-                    }]
+                    }
                 })
         }
 

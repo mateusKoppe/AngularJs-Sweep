@@ -29,9 +29,8 @@
         }
 
         function userCreated(user){
-            userFactory.login(user).then(function(result){
-                userLogged(result.data);
-            });
+            loginFactory.setUser(user);
+            $state.go('class');
         }
 
         function userLogged(){

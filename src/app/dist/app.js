@@ -237,7 +237,7 @@
                     templateUrl: 'app/class/class.html',
                     controller: 'ClassController',
                     controllerAs: 'vm',
-                    onEnter: ['$state', 'loginFactory',function($state, loginFactory){
+                    onEnter: ["$state", "loginFactory", function($state, loginFactory){
                         if(loginFactory.getUser() == {}) $state.go("home");
                         if(!loginFactory.getUser().user_id) $state.go("home");
                         if(!loginFactory.getUser().user_class) $state.go("firstTime");
@@ -248,7 +248,7 @@
                     templateUrl: 'app/class/first-time.html',
                     controller: 'FirstTimeController',
                     controllerAs: 'vm',
-                    onEnter: ['$state', 'loginFactory',function($state, loginFactory){
+                    onEnter: ["$state", "loginFactory", function($state, loginFactory){
                         if(loginFactory.getUser() == {}) $state.go("home");
                         if(!loginFactory.getUser().user_id) $state.go("home");
                         if(loginFactory.getUser().user_class) $state.go("class");
@@ -377,9 +377,8 @@
         }
 
         function userCreated(user){
-            userFactory.login(user).then(function(result){
-                userLogged(result.data);
-            });
+            loginFactory.setUser(user);
+            $state.go('class');
         }
 
         function userLogged(){
@@ -443,7 +442,7 @@
                     $scope[form].$setUntouched();
                     $scope[form].$setPristine();
                 }
-                success(userData);
+                success(result.data);
             });
         }
 

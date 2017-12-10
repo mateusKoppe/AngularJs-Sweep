@@ -19,7 +19,7 @@
                     $scope[form].$setUntouched();
                     $scope[form].$setPristine();
                 }
-                success(userData);
+                success(result.data);
             });
         }
 
