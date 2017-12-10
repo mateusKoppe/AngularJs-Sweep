@@ -4,9 +4,10 @@ require 'database.php';
 class UserModel
 {
     private static $dbTable = "users";
+    public $id;
     public $username;
     public $password;
-    public $classId;
+    public $className;
 
     public static function isAvailabilable($username)
     {
@@ -24,22 +25,27 @@ class UserModel
             INSERT INTO " . SELF::$dbTable . "
             (user_username, user_password, user_class)
             VALUES
-            (:username, :password, :classId)
+            (:username, :password, :className)
         ";
         $conn = Database::createConnection();
         $sth = $conn->prepare($sql);
         $sth->bindParam(':username', $this->username);
         $sth->bindParam(':password', $this->password);
-        $sth->bindParam(':classId', $this->classId);
-        return $sth->execute();
+        $sth->bindParam(':className', $this->className);
+        $success = $sth->execute();
+        if($success){
+            $this->id = $conn->lastInsertId();
+        }
+        return $success;
     }
 
     public function getContentData()
     {
         return [
-            'username' => $this->username,
-            'password' => $this->password,
-            'classId' => $this->classId,
+            'user_id' => $this->id,
+            'user_username' => $this->username,
+            'user_password' => $this->password,
+            'user_class' => $this->className,
         ];
     }
 }

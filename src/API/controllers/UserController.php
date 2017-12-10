@@ -11,8 +11,8 @@ class UserController extends Controller
         $user = new UserModel();
         $user->username = $this->body->username;
         $user->password = $this->body->password;
-        $success = $user->save();
-        if($success){
+        $id = $user->save();
+        if($id){
             $this->json($user->getContentData(), 201);
         } else {
             $this->json(null, 400);
