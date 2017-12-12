@@ -30,7 +30,7 @@
 
         function userCreated(user){
             loginFactory.setUser(user);
-            $state.go('class');
+            $state.go('firstTime');
         }
 
         function userLogged(){

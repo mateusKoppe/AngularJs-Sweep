@@ -5,9 +5,8 @@
         .module('app.class')
         .controller('ClassController', ClassController);
 
-    function ClassController(loginFactory, userFactory, $mdDialog, orderByFilter, $state) {
+    function ClassController(loginFactory, userFactory, $mdDialog, orderByFilter, $state, classFactory) {
         var vm = this;
-        vm.className = loginFactory.getUser().user_class;
         vm.editStudants = editStudants;
         vm.editStudantDialog = editStudantDialog;
         vm.exit = exit;
@@ -15,15 +14,16 @@
         vm.notSelected = notSelected;
         vm.removeStudant = removeStudant;
         vm.someoneStudant = someoneStudant;
-        vm.studants = orderStudants(loginFactory.getUser().studants);
         vm.sweep = sweep;
         vm.toggleSelecteds = toggleSelecteds;
 
+        vm.className = "";
+        vm.studants = [];
+
 
         vm.$onInit = function () {
-            if (!vm.studants) {
-                vm.studants = [];
-            }
+            vm.className = classFactory.getActualClass().class_name;
+            // vm.studants = orderStudants(loginFactory.getUser().studants);
         }
 
         /* Private */

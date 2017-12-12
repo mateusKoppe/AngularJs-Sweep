@@ -36,14 +36,13 @@
 (function () {
     'use strict';
 
-    ClassController.$inject = ["loginFactory", "userFactory", "$mdDialog", "orderByFilter", "$state"];
+    ClassController.$inject = ["loginFactory", "userFactory", "$mdDialog", "orderByFilter", "$state", "classFactory"];
     angular
         .module('app.class')
         .controller('ClassController', ClassController);
 
-    function ClassController(loginFactory, userFactory, $mdDialog, orderByFilter, $state) {
+    function ClassController(loginFactory, userFactory, $mdDialog, orderByFilter, $state, classFactory) {
         var vm = this;
-        vm.className = loginFactory.getUser().user_class;
         vm.editStudants = editStudants;
         vm.editStudantDialog = editStudantDialog;
         vm.exit = exit;
@@ -51,15 +50,16 @@
         vm.notSelected = notSelected;
         vm.removeStudant = removeStudant;
         vm.someoneStudant = someoneStudant;
-        vm.studants = orderStudants(loginFactory.getUser().studants);
         vm.sweep = sweep;
         vm.toggleSelecteds = toggleSelecteds;
 
+        vm.className = "";
+        vm.studants = [];
+
 
         vm.$onInit = function () {
-            if (!vm.studants) {
-                vm.studants = [];
-            }
+            vm.className = classFactory.getActualClass().class_name;
+            // vm.studants = orderStudants(loginFactory.getUser().studants);
         }
 
         /* Private */
@@ -222,6 +222,50 @@
     }
 })();
 
+(function () {
+    'use strict';
+
+    classFactory.$inject = ["$http", "variables"];
+    angular
+        .module('app.class')
+        .service('classFactory', classFactory);
+
+    function classFactory($http, variables) {
+        var _class = false;
+        var service = {
+            getClassByUser: getClassByUser,
+            updateClass: updateClass,
+            setActualClass: setActualClass,
+            getActualClass: getActualClass,
+        };
+        return service;
+
+        function getClassByUser(user) {
+            return $http.get(variables.urlApi + '/classByUser/' + user.user_id)
+                .then(function(response) {
+                    setActualClass(response.data);
+                    return response;
+                });
+        }
+
+        function updateClass(update) {
+            return $http.put(variables.urlApi + '/class/' + update.class_id, update)
+                .then(function(response) {
+                    setActualClass(response.data);
+                    return response;
+                });
+        }
+
+        function setActualClass(newClass){
+            _class = newClass;
+        }
+
+        function getActualClass(){
+            return _class;
+        }
+    }
+})();
+
 (function(){
     'use strict';
 
@@ -237,22 +281,41 @@
                     templateUrl: 'app/class/class.html',
                     controller: 'ClassController',
                     controllerAs: 'vm',
-                    onEnter: ["$state", "loginFactory", function($state, loginFactory){
-                        if(loginFactory.getUser() == {}) $state.go("home");
-                        if(!loginFactory.getUser().user_id) $state.go("home");
-                        if(!loginFactory.getUser().user_class) $state.go("firstTime");
-                    }]
+                    resolve: {
+                        userRoute: ["$state", "loginFactory", "$q", function($state, loginFactory, $q){
+                            if(!loginFactory.getUser()) $state.go('home');
+                            return loginFactory.getUser();
+                        }],
+                        classRoute: ["$state", "classFactory", "loginFactory", function($state, classFactory, loginFactory){
+                            if(classFactory.getActualClass()){
+                                return classFactory.getActualClass();
+                            }
+                            return classFactory.getClassByUser(loginFactory.getUser())
+                                .then(response => {
+                                    if(!response.data.class_name){
+                                        $state.go('firstTime');
+                                    }
+                                    return response.data;
+                                });
+                        }]
+                    }
                 })
                 .state('firstTime', {
                     url: '/turma/primeiravisita',
                     templateUrl: 'app/class/first-time.html',
                     controller: 'FirstTimeController',
                     controllerAs: 'vm',
-                    onEnter: ["$state", "loginFactory", function($state, loginFactory){
-                        if(loginFactory.getUser() == {}) $state.go("home");
-                        if(!loginFactory.getUser().user_id) $state.go("home");
-                        if(loginFactory.getUser().user_class) $state.go("class");
-                    }]
+                    resolve: {
+                        userRoute: ["$state", "loginFactory", "$q", "$timeout", function($state, loginFactory, $q, $timeout){
+                            if(!loginFactory.getUser()) {
+                                $timeout(function(){
+                                    $state.go('home');
+                                });
+                            } else {
+                                return loginFactory.getUser();
+                            }
+                        }]
+                    }
                 })
         }
 
@@ -261,21 +324,25 @@
 (function () {
     'use strict';
 
-    FirstTimeController.$inject = ["userFactory", "loginFactory", "$state"];
+    FirstTimeController.$inject = ["$state", "loginFactory", "classFactory"];
     angular
         .module('app.class')
         .controller('FirstTimeController', FirstTimeController);
 
-    function FirstTimeController(userFactory, loginFactory, $state) {
+    function FirstTimeController($state, loginFactory, classFactory) {
         var vm = this;
         vm.setClass = setClass;
 
+        vm.$onInit = function(){
+            classFactory.getClassByUser(loginFactory.getUser())
+                .then(response => {
+                    vm.class = response.data;
+                });
+        }
+
         function setClass(className) {
-            var data = {
-                className: className
-            }
-            userFactory.defineClassName(data);
-            loginFactory.getUser().user_class = className;
+            vm.class.class_name = className;
+            classFactory.updateClass(vm.class);
             $state.go('class');
         }
     }
@@ -378,7 +445,7 @@
 
         function userCreated(user){
             loginFactory.setUser(user);
-            $state.go('class');
+            $state.go('firstTime');
         }
 
         function userLogged(){
@@ -470,6 +537,7 @@
 
 (function () {
     'use strict';
+    
     userFactory.$inject = ["$http", "variables", "$location", "loginFactory"];
     angular
         .module('app.user')

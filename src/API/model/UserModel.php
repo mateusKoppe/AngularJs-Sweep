@@ -64,7 +64,6 @@ class UserModel
         return [
             'user_id' => $this->id,
             'user_username' => $this->username,
-            'user_class' => $this->className,
         ];
     }
 }

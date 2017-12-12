@@ -3,3 +3,5 @@ RewriteEngine On
 RewriteRule ^users/checkAvailability/(.*)$  index.php?controller=user&action=checkAvailability&username=$1 [NC]
 RewriteRule ^login$  index.php?controller=user&action=login [NC]
 RewriteRule ^users$  index.php?controller=user [NC]
+RewriteRule ^classByUser/(\d*)$  index.php?controller=class&action=classByUser&user=$1 [NC]
+RewriteRule ^class/(\d*)$  index.php?controller=class&id=$1 [NC]
