@@ -1,6 +1,6 @@
 <?php
 
-require_once 'model/UserModel.php';
+require_once 'models/UserModel.php';
 require_once 'controllers/Controller.php';
 
 class UserController extends Controller
@@ -11,6 +11,7 @@ class UserController extends Controller
         $user = new UserModel();
         $user->username = $this->body->username;
         $user->password = $this->body->password;
+        var_dump($user);
         $id = $user->save();
         if($id){
             $this->json($user->getContentData(), 201);

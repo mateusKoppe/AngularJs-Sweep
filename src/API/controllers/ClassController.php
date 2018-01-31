@@ -1,6 +1,6 @@
 <?php
     require_once 'controllers/Controller.php';
-    require_once 'model/ClassModel.php';
+    require_once 'models/ClassModel.php';
 
     class ClassController extends Controller
     {
