@@ -52,14 +52,12 @@
         vm.someoneStudant = someoneStudant;
         vm.sweep = sweep;
         vm.toggleSelecteds = toggleSelecteds;
-
         vm.className = "";
         vm.studants = [];
 
-
         vm.$onInit = function () {
             vm.className = classFactory.getActualClass().class_name;
-            // vm.studants = orderStudants(loginFactory.getUser().studants);
+            vm.studants = orderStudants(classFactory.getActualClass().class_studants);
         }
 
         /* Private */
@@ -98,6 +96,7 @@
 
         /* Publics */
         function editStudantDialog($event, studants, callback) {
+            EditStudantDialogController.$inject = ["editStudants", "callback", "$mdDialog", "userFactory"];
             var body = angular.element(document.body);
             $mdDialog.show({
                 parent: body,
@@ -110,8 +109,6 @@
                 controller: EditStudantDialogController,
                 controllerAs: 'vm'
             });
-
-            EditStudantDialogController.$inject = ['editStudants', 'callback', '$mdDialog', 'userFactory'];
 
             function EditStudantDialogController(editStudants, callback, $mdDialog, userFactory) {
                 var vm = this;

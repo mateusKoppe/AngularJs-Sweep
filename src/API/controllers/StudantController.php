@@ -1,14 +1,13 @@
 <?php
 
-$request_body = file_get_contents('php://input');
-$data = json_decode($request_body);
+require 'controllers/Controller.php';
+require 'models/StudantModel.php';
 
-$DBTable = "users";
-
-class StudantController
+class StudantController extends Controller
 {
     public function create()
     {
+        var_dump($this->body);
         $studant = filterValue($data->name);
         $class = filterValue($data->class);
         $sql = "INSERT INTO studants (studant_name, user_id) values ('$studant', $class)";
@@ -17,6 +16,11 @@ class StudantController
             echo json_encode($conn->query($sql)->fetch(PDO::FETCH_ASSOC));
         }
         return false;
+    }
+
+    public function show(){
+        echo "ok";
+        exit();
     }
 
     public function update()

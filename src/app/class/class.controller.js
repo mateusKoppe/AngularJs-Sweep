@@ -5,7 +5,15 @@
         .module('app.class')
         .controller('ClassController', ClassController);
 
-    function ClassController(loginFactory, userFactory, $mdDialog, orderByFilter, $state, classFactory) {
+    function ClassController(
+            loginFactory,
+            userFactory,
+            $mdDialog,
+            orderByFilter,
+            $state,
+            classFactory,
+            studantsFactory
+        ) {
         var vm = this;
         vm.editStudants = editStudants;
         vm.editStudantDialog = editStudantDialog;
@@ -16,14 +24,12 @@
         vm.someoneStudant = someoneStudant;
         vm.sweep = sweep;
         vm.toggleSelecteds = toggleSelecteds;
-
         vm.className = "";
         vm.studants = [];
 
-
         vm.$onInit = function () {
             vm.className = classFactory.getActualClass().class_name;
-            // vm.studants = orderStudants(loginFactory.getUser().studants);
+            vm.studants = studantsFactory.getStudantsByClass(classFactory.getActualClass());
         }
 
         /* Private */
@@ -74,8 +80,6 @@
                 controller: EditStudantDialogController,
                 controllerAs: 'vm'
             });
-
-            EditStudantDialogController.$inject = ['editStudants', 'callback', '$mdDialog', 'userFactory'];
 
             function EditStudantDialogController(editStudants, callback, $mdDialog, userFactory) {
                 var vm = this;
