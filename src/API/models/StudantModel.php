@@ -1,5 +1,6 @@
 <?php
-require 'database.php';
+require_once 'database.php';
+require_once 'ClassModel.php';
 
 class StudantModel
 {
@@ -10,6 +11,9 @@ class StudantModel
 
     public static function listByClassId($id)
     {
+        if(!ClassModel::classExist($id)){
+            return false;
+        }
         $sql = "
             SELECT * FROM " . SELF::$dbTable . "
             WHERE user_id = :classId

@@ -19,8 +19,19 @@ class StudantController extends Controller
     }
 
     public function show(){
-        echo "ok";
-        exit();
+        echo $_GET['id'];
+    }
+
+    public function list(){
+        $class_id = $_GET['class'];
+        $studants = StudantModel::listByClassId($class_id);
+        if(!$studants){
+            $this->json([
+                'error' => "class not found"
+            ]);
+            exit();
+        }
+        $this->json($studants);
     }
 
     public function update()
