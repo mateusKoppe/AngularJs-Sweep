@@ -10,7 +10,12 @@ class Controller
     protected function json($data, $status = 200)
     {
         header('Content-Type: application/json');
-        http_response_code($status);
+        $this->status(200);
         echo json_encode($data);
+    }
+
+    protected function status($status)
+    {
+        http_response_code($status);
     }
 }
