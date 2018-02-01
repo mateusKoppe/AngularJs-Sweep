@@ -17,12 +17,22 @@
 
 (function(){
     'use strict';
-    
+
     angular
         .module('app.class', [
             'ui.router',
-            'app.user'
+            'app.user',
+            'app.studants',
         ])
+})();
+
+(function(){
+    'use strict';
+    angular
+        .module('app.studants', [
+            'ui.router'
+        ])
+
 })();
 
 (function(){
@@ -36,12 +46,20 @@
 (function () {
     'use strict';
 
-    ClassController.$inject = ["loginFactory", "userFactory", "$mdDialog", "orderByFilter", "$state", "classFactory"];
+    ClassController.$inject = ["loginFactory", "userFactory", "$mdDialog", "orderByFilter", "$state", "classFactory", "studantsFactory"];
     angular
         .module('app.class')
         .controller('ClassController', ClassController);
 
-    function ClassController(loginFactory, userFactory, $mdDialog, orderByFilter, $state, classFactory) {
+    function ClassController(
+            loginFactory,
+            userFactory,
+            $mdDialog,
+            orderByFilter,
+            $state,
+            classFactory,
+            studantsFactory
+        ) {
         var vm = this;
         vm.editStudants = editStudants;
         vm.editStudantDialog = editStudantDialog;
@@ -57,10 +75,18 @@
 
         vm.$onInit = function () {
             vm.className = classFactory.getActualClass().class_name;
-            vm.studants = orderStudants(classFactory.getActualClass().class_studants);
+            loadStudants();
         }
 
         /* Private */
+        function loadStudants() {
+            studantsFactory.getStudantsByClass(classFactory.getActualClass())
+                .then(function(request){
+                    vm.studants = request.data;
+                });
+
+        }
+
         function exit() {
             $state.go('home');
         }
@@ -449,6 +475,27 @@
             $state.go("class");
         }
 
+    }
+})();
+
+(function () {
+    'use strict';
+
+    studantsFactory.$inject = ["$http", "variables"];
+    angular
+        .module('app.studants')
+        .service('studantsFactory', studantsFactory);
+
+    function studantsFactory($http, variables) {
+        var service = {
+            getStudantsByClass: getStudantsByClass
+        };
+        return service;
+
+        function getStudantsByClass(classData){
+            var url = variables.urlApi + "/class/" + classData.class_id + "/studants";
+            return $http.get(url);
+        }
     }
 })();
 

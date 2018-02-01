@@ -12,7 +12,8 @@
         return service;
 
         function getStudantsByClass(classData){
-            
+            var url = variables.urlApi + "/class/" + classData.class_id + "/studants";
+            return $http.get(url);
         }
     }
 })();

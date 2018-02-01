@@ -29,10 +29,18 @@
 
         vm.$onInit = function () {
             vm.className = classFactory.getActualClass().class_name;
-            vm.studants = studantsFactory.getStudantsByClass(classFactory.getActualClass());
+            loadStudants();
         }
 
         /* Private */
+        function loadStudants() {
+            studantsFactory.getStudantsByClass(classFactory.getActualClass())
+                .then(function(request){
+                    vm.studants = request.data;
+                });
+
+        }
+
         function exit() {
             $state.go('home');
         }
