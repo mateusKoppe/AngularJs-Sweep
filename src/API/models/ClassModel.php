@@ -1,5 +1,5 @@
 <?php
-require 'database.php';
+require_once 'database.php';
 
 class ClassModel
 {
@@ -43,6 +43,15 @@ class ClassModel
         $class->id = $classData['user_id'];
         $class->name = $classData['user_class'];
         return $class;
+    }
+
+    public static function classExist($id)
+    {
+        $sql = "SELECT COUNT(user_id) AS exist FROM users WHERE user_id = :class";
+        $conn = Database::createConnection();
+        $sth = $conn->prepare($sql);
+        $sth->execute([':class' => $id]);
+        return $sth->fetch(PDO::FETCH_OBJ)->exist; 
     }
 
     public function update()
