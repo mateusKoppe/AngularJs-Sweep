@@ -16,7 +16,7 @@ services:
       - code
 
   php:
-    build: ./docker/
+    build: .
     working_dir: /var/www/default
     volumes_from:
       - code
@@ -35,6 +35,7 @@ services:
     image: busybox
     volumes:
       - ./src:/var/www/default
+      - ./composer.json:/var/www/default/composer.json
 
 # COPY conf/my.cnf /etc/mysql/my.cnf
 # - ./conf/php.ini:/etc/php/7.1/fpm/conf.d/40-custom.ini

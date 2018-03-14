@@ -10,6 +10,10 @@ server {
     try_files $uri $uri/ /index.php$is_args$args;
   }
 
+  location /API {
+    try_files $uri $uri/ /API/index.php$is_args$args;
+  }
+
   location ~* \.(js|css|png|jpg|jpeg|gif|ico)$ {
     expires       max;
     log_not_found off;
