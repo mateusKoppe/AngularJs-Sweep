@@ -12,6 +12,11 @@ class Router {
         $this->routes = array_merge($this->routes, $router->routes);
     }
     
+    public function allowCors() {
+        header("Access-Control-Allow-Origin: *");
+        header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
+    }
+
     public function render() {
         $router = new AltoRouter();
         

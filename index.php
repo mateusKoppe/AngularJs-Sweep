@@ -6,5 +6,5 @@ header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Ac
 require_once "vendor/autoload.php";
 
 $router = new App\Routers\MainRouter();
-
+$router->allowCors();
 $router->render();
