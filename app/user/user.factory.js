@@ -9,7 +9,6 @@
         var service = {
             checkAvailability: checkAvailability,
             create: create,
-            createStudant: createStudant,
             editStudants: editStudants,
             defineClassName: defineClassName,
             login: login,
@@ -26,10 +25,7 @@
             return $http.post(variables.urlApi + '/users', data);
         };
 
-        function createStudant(data){
-            data.action = "createStudant";
-            return $http.post(variables.urlApi + '/users', data);
-        }
+        
 
         function editStudants(studants){
             var data = {

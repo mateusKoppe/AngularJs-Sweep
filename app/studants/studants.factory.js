@@ -7,9 +7,15 @@
 
     function studantsFactory($http, variables) {
         var service = {
-            getStudantsByClass: getStudantsByClass
+            getStudantsByClass: getStudantsByClass,
+            create: create,
         };
         return service;
+
+        function create(data){
+            var url = variables.urlApi + "/class/" + data.class + "/studants";
+            return $http.post(url, data);
+        }
 
         function getStudantsByClass(classData){
             var url = variables.urlApi + "/class/" + classData.class_id + "/studants";

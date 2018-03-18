@@ -46,17 +46,17 @@
 (function () {
     'use strict';
 
-    ClassController.$inject = ["loginFactory", "userFactory", "$mdDialog", "orderByFilter", "$state", "classFactory", "studantsFactory"];
+    ClassController.$inject = ["$state", "$mdDialog", "loginFactory", "userFactory", "orderByFilter", "classFactory", "studantsFactory"];
     angular
         .module('app.class')
         .controller('ClassController', ClassController);
 
     function ClassController(
+            $state,
+            $mdDialog,
             loginFactory,
             userFactory,
-            $mdDialog,
             orderByFilter,
-            $state,
             classFactory,
             studantsFactory
         ) {
@@ -107,7 +107,7 @@
 
         function orderStudants(studants) {
             studants = angular.forEach(studants, function (studant) {
-                studant.times = new Number(studant.times);
+                studant.times = +studant.times;
             });
             return orderByFilter(studants, ['times', 'name']);
         }
@@ -190,7 +190,7 @@
                     class: loginFactory.getUser().user_id,
                     name: result
                 };
-                userFactory.createStudant(data).then(function (result) {
+                studantsFactory.create(data).then(function (result) {
                     var studant = result.data;
                     vm.studants.push({
                         id: studant.studant_id,
@@ -355,18 +355,21 @@
     function FirstTimeController($state, loginFactory, classFactory) {
         var vm = this;
         vm.setClass = setClass;
+        vm.class = {};
 
         vm.$onInit = function(){
             classFactory.getClassByUser(loginFactory.getUser())
-                .then(response => {
+                .then(function(response) {
                     vm.class = response.data;
                 });
         }
 
         function setClass(className) {
             vm.class.class_name = className;
-            classFactory.updateClass(vm.class);
-            $state.go('class');
+            classFactory.updateClass(vm.class)
+                .then(function() {
+                    $state.go('class');
+                });
         }
     }
 })();
@@ -488,9 +491,15 @@
 
     function studantsFactory($http, variables) {
         var service = {
-            getStudantsByClass: getStudantsByClass
+            getStudantsByClass: getStudantsByClass,
+            create: create,
         };
         return service;
+
+        function create(data){
+            var url = variables.urlApi + "/class/" + data.class + "/studants";
+            return $http.post(url, data);
+        }
 
         function getStudantsByClass(classData){
             var url = variables.urlApi + "/class/" + classData.class_id + "/studants";
@@ -591,7 +600,6 @@
         var service = {
             checkAvailability: checkAvailability,
             create: create,
-            createStudant: createStudant,
             editStudants: editStudants,
             defineClassName: defineClassName,
             login: login,
@@ -608,10 +616,7 @@
             return $http.post(variables.urlApi + '/users', data);
         };
 
-        function createStudant(data){
-            data.action = "createStudant";
-            return $http.post(variables.urlApi + '/users', data);
-        }
+        
 
         function editStudants(studants){
             var data = {

@@ -6,11 +6,11 @@
         .controller('ClassController', ClassController);
 
     function ClassController(
+            $state,
+            $mdDialog,
             loginFactory,
             userFactory,
-            $mdDialog,
             orderByFilter,
-            $state,
             classFactory,
             studantsFactory
         ) {
@@ -61,7 +61,7 @@
 
         function orderStudants(studants) {
             studants = angular.forEach(studants, function (studant) {
-                studant.times = new Number(studant.times);
+                studant.times = +studant.times;
             });
             return orderByFilter(studants, ['times', 'name']);
         }
@@ -143,7 +143,7 @@
                     class: loginFactory.getUser().user_id,
                     name: result
                 };
-                userFactory.createStudant(data).then(function (result) {
+                studantsFactory.create(data).then(function (result) {
                     var studant = result.data;
                     vm.studants.push({
                         id: studant.studant_id,
