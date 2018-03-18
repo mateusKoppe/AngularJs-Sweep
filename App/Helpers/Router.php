@@ -30,18 +30,27 @@ class Router {
         }
 
         $match = $router->match();
-
-        $this->callController($match);
+        $isRouteExist = $match;
+        if($isRouteExist) {
+          $this->callController($match);
+        } else {
+          http_response_code(404);
+        }
     }
 
     protected function callController($match) {
         $target = $match['target'];
-        $controller = explode('::', $match['target'])[0];
-        $action = explode('::', $match['target'])[1];
+        if (is_string($target)) {
+          $controller = explode('::', $match['target'])[0];
+          $action = explode('::', $match['target'])[1];
 
-        $controller = "\\App\\Controllers\\$controller";
-        $controller = new $controller();
-        return $controller->$action($match['params']);
+          $controller = "\\App\\Controllers\\$controller";
+          $controller = new $controller();
+          return $controller->$action($match['params']);
+        }
+        else if (is_callable($target)) {
+          $target($match['params']);
+        }
     }
     
 }
