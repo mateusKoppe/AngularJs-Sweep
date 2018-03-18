@@ -9,7 +9,8 @@ class StudantModel
     private static $dbTable = "studants";
     public $id;
     public $name;
-    public $times;
+    public $times = 0;
+    public $class;
 
     public static function listByClassId($id)
     {
@@ -33,4 +34,30 @@ class StudantModel
         }
         return $studants;
     }
+
+    public function save()
+    {
+        $sql = "INSERT INTO studants (studant_name, studant_times, user_id) values (:name, :times, :class)";
+        $conn = Database::createConnection();
+        $sth = $conn->prepare($sql);
+        $sth->bindParam(':name', $this->name);
+        $sth->bindParam(':times', $this->times);
+        $sth->bindParam(':class', $this->class);
+        $success = $sth->execute();
+        if($success){
+            $this->id = $conn->lastInsertId();
+        }
+        return $success;
+    }
+
+    public function getContentData()
+    {
+        return [
+            'studant_id' => $this->id,
+            'studant_name' => $this->name,
+            'studant_times' => $this->times,
+            'user_id' => $this->class,
+        ];
+    }
+
 }

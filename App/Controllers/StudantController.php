@@ -8,14 +8,16 @@ class StudantController extends Controller
 {
     public function create()
     {
-        $studant = filterValue($data->name);
-        $class = filterValue($data->class);
-        $sql = "INSERT INTO studants (studant_name, user_id) values ('$studant', $class)";
-        if($conn->query($sql)->rowCount() != 0){
-            $sql = "SELECT studant_id, studant_name, studant_times FROM studants WHERE studant_name = '$studant' AND user_id = $class ORDER BY studant_id DESC LIMIT 1";
-            echo json_encode($conn->query($sql)->fetch(PDO::FETCH_ASSOC));
+        $studant = new StudantModel();
+        $studant->name = $this->body->name;
+        $studant->class = $this->body->class;
+        $success = $studant->save();
+        if($success){
+            $this->json($studant->getContentData(), 201);
+        } else {
+            $this->json(null, 400);
         }
-        return false;
+
     }
 
     public function show($params) {
