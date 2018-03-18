@@ -8,7 +8,6 @@ class StudantController extends Controller
 {
     public function create()
     {
-        var_dump($this->body);
         $studant = filterValue($data->name);
         $class = filterValue($data->class);
         $sql = "INSERT INTO studants (studant_name, user_id) values ('$studant', $class)";
@@ -19,17 +18,17 @@ class StudantController extends Controller
         return false;
     }
 
-    public function show(){
-        echo $_GET['id'];
+    public function show($params) {
+        echo $params['id'];
     }
 
-    public function list(){
-        $class_id = $_GET['class'];
+    public function list($params) {
+        $class_id = $params['class'];
         $studants = StudantModel::listByClassId($class_id);
-        if(!$studants){
+        if($studants === false){
             $this->json([
                 'error' => "class not found"
-            ]);
+            ], 404);
             exit();
         }
         $this->json($studants);
