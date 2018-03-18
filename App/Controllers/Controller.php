@@ -13,7 +13,7 @@ class Controller
     protected function json($data, $status = 200)
     {
         header('Content-Type: application/json');
-        $this->status(200);
+        $this->status($status);
         echo json_encode($data);
     }
 
