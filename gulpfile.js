@@ -36,7 +36,7 @@ gulp.task('sass-watch', ['sass'], function(){
 
 gulp.task('javascript-watch', ['javascript'], function(){
     console.log('javascript-watch');
-    return gulp.watch(['app/**/*.js', '!app/**/dist/*.js'], ['javascript']);
+    return gulp.watch(['app/**/*.js'], ['javascript']);
 });
 
 /**  Basic functions **/
@@ -50,7 +50,7 @@ gulp.task('javascript', function () {
         .pipe(ngAnnotate())
         .pipe(concat('app.js'))
         .pipe(sourcemaps.write('./'))
-        .pipe(gulp.dest('./app/dist'));
+        .pipe(gulp.dest('./dist'));
 });
 
 gulp.task('sass', function () {
@@ -63,7 +63,7 @@ gulp.task('sass', function () {
         .pipe(autoprefixer())
         .pipe(cleanCSS())
         .pipe(sourcemaps.write('./'))
-        .pipe(gulp.dest('app/dist'));
+        .pipe(gulp.dest('./dist'));
 });
 
 gulp.task('default', ['javascript', 'sass']);
