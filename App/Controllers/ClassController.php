@@ -5,9 +5,9 @@
 
     class ClassController extends Controller
     {
-        public function classByUser()
+        public function classByUser($params)
         {
-            $id = $_GET['user'];
+            $id = $params['user'];
             $class = ClassModel::findByUserId($id);
             $this->json($class->getContentData());
         }
