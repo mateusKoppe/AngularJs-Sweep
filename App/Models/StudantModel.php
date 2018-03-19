@@ -30,6 +30,7 @@ class StudantModel
             $studant->id = $row->studant_id;
             $studant->name = $row->studant_name;
             $studant->times = $row->studant_times;
+            $studant->class = $row->user_id;
             $studants[] = $studant;
         }
         return $studants;
@@ -48,6 +49,24 @@ class StudantModel
             $this->id = $conn->lastInsertId();
         }
         return $success;
+    }
+
+    public function update()
+    {
+        $sql = "
+            UPDATE " . SELF::$dbTable . "
+            SET
+                studant_name = :name,
+                studant_times = :times
+            WHERE user_id = :class AND studant_id = :id
+        ";
+        $conn = Database::createConnection();
+        $sth = $conn->prepare($sql);
+        $sth->bindParam(':id', $this->id);
+        $sth->bindParam(':name', $this->name);
+        $sth->bindParam(':times', $this->times);
+        $sth->bindParam(':class', $this->class);
+        return $sth->execute();
     }
 
     public function getContentData()

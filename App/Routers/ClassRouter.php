@@ -11,6 +11,7 @@ class ClassRouter extends Router
         ['GET', '/class/[i:id]', 'ClassController::classByUser', 'showClass'],
         ['PUT', '/class/[i:id]', 'ClassController::update', 'updateClass'],
         ['GET', '/class/[i:class]/studants', 'StudantController::list', 'listStudant'],
-        ['POST', '/class/[i:class]/studants', 'StudantController::create', 'createStudant']
+        ['POST', '/class/[i:class]/studants', 'StudantController::create', 'createStudant'],
+        ['PUT', '/class/[i:class]/studants', 'StudantController::updateMultiple', 'updateStudants']
     ];
 }

@@ -6,11 +6,11 @@ use App\Models\StudantModel;
 
 class StudantController extends Controller
 {
-    public function create()
+    public function create($params)
     {
         $studant = new StudantModel();
         $studant->name = $this->body->name;
-        $studant->class = $this->body->class;
+        $studant->class = $params['class'];
         $success = $studant->save();
         if($success){
             $this->json($studant->getContentData(), 201);
@@ -36,20 +36,28 @@ class StudantController extends Controller
         $this->json($studants);
     }
 
-    public function update()
+    public function updateMultiple($params)
     {
-        $studants = $data->studants;
-        $success = true;
-        foreach($studants as $studant){
-            $sql = "UPDATE studants SET";
-            foreach($studant as $key => $attrs){
-                $sql .= " studant_$key = '$attrs',";
+        $body_studants = $this->body->studants;
+        $class_id = $params['class'];
+        $studants_success = [];
+        foreach($body_studants as $studant_data) {
+            $studant = new StudantModel();
+            $studant->name = $studant_data->name;
+            $studant->times = $studant_data->times;
+            $studant->class = $class_id;
+            $studant->id = $studant_data->id;
+            $success = $studant->update();
+            if($success) {
+              $studants_success[] = [
+                "id" => $studant->id,
+                "name" => $studant->name,
+                "times" => $studant->times,
+                "class" => $studant->class
+              ];
             }
-            $sql .= "#WHERE studant_id = $studant->id ;";
-            $sql = str_replace(",#", " ", $sql);
-            $success =  ($conn->query($sql)->rowCount() == 0) && $success;
-        };
-        echo $success;
+        }
+        $this->json($studants_success, 200);
     }
 
     public function remove()
