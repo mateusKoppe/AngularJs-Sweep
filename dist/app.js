@@ -122,51 +122,28 @@
 
         /* Publics */
         function editStudantDialog($event, studants, callback) {
-            EditStudantDialogController.$inject = ["editStudants", "callback", "$mdDialog", "userFactory"];
             var body = angular.element(document.body);
+            studants = convertSelectsStudants(studants);
             $mdDialog.show({
                 parent: body,
                 targetEvent: $event,
-                templateUrl: 'app/class/edit-studant-dialog.html',
+                templateUrl: 'app/class/dialogs/edit-studant.html',
                 locals: {
-                    editStudants: angular.copy(studants),
+                    studants: angular.copy(studants),
                     callback: callback
                 },
-                controller: EditStudantDialogController,
+                controller: 'EditStudantController',
                 controllerAs: 'vm'
             });
-
-            function EditStudantDialogController(editStudants, callback, $mdDialog, userFactory) {
-                var vm = this;
-                vm.close = close;
-                vm.editStudants = editStudants;
-                vm.callbackEditStudant = callback;
-                vm.studants = angular.copy(convertSelectsStudants(studants));
-
-                function close() {
-                    $mdDialog.hide();
-                }
-
-                function editStudants(editStudants, callback) {
-
-                    userFactory.editStudants(editStudants).then(function (result) {
-                        callback(editStudants);
-                    });
-                }
-
-            }
-
         }
 
         /* Publics */
         function editStudants(studants) {
-            vm.studants = vm.studants.map(function (studant) {
-                studants.forEach(function (editStudant) {
-                    if (editStudant.id == studant.id) {
-                        studant = editStudant;
-                    }
+            studants.forEach(function (editStudant) {
+                var studantIndex = vm.studants.findIndex(function(studant) {
+                    return studant.id === editStudant.id;
                 });
-                return studant;
+                vm.studants[studantIndex] = editStudant;
             });
             $mdDialog.hide();
         }
@@ -200,7 +177,7 @@
                     vm.studants = orderStudants(vm.studants);
                 });
             });
-        };
+        }
 
         function removeStudant(studants) {
             var studantsSelects = convertSelectsStudants(studants);
@@ -347,6 +324,35 @@
 (function () {
     'use strict';
 
+    EditStudantController.$inject = ["studants", "callback", "$mdDialog", "studantsFactory"];
+    angular
+        .module('app.class')
+        .controller('EditStudantController', EditStudantController);
+
+    function EditStudantController(studants, callback, $mdDialog, studantsFactory) {
+        var vm = this;
+        vm.close = close;
+        vm.editStudants = editStudants;
+        vm.callbackEditStudant = callback;
+        vm.studants = studants;
+
+        function close() {
+            $mdDialog.hide();
+        }
+
+        function editStudants(editStudants, callback) {
+            studantsFactory.editStudants(editStudants).then(function(result) {
+                callback(result.data);
+            });
+        }
+
+    }
+
+})();
+
+(function () {
+    'use strict';
+
     FirstTimeController.$inject = ["$state", "loginFactory", "classFactory"];
     angular
         .module('app.class')
@@ -484,21 +490,28 @@
 (function () {
     'use strict';
 
-    studantsFactory.$inject = ["$http", "variables"];
+    studantsFactory.$inject = ["$http", "variables", "classFactory"];
     angular
         .module('app.studants')
         .service('studantsFactory', studantsFactory);
 
-    function studantsFactory($http, variables) {
+    function studantsFactory($http, variables, classFactory) {
         var service = {
-            getStudantsByClass: getStudantsByClass,
             create: create,
+            editStudants: editStudants,
+            getStudantsByClass: getStudantsByClass
         };
         return service;
 
         function create(data){
-            var url = variables.urlApi + "/class/" + data.class + "/studants";
+            var url = variables.urlApi + "/class/" + classFactory.getActualClass().class_id + "/studants";
             return $http.post(url, data);
+        }
+
+        function editStudants(studants){
+            var data = {studants: studants};
+            var url = variables.urlApi + "/class/" + classFactory.getActualClass().class_id + "/studants";
+            return $http.put(url, data);
         }
 
         function getStudantsByClass(classData){
@@ -600,7 +613,6 @@
         var service = {
             checkAvailability: checkAvailability,
             create: create,
-            editStudants: editStudants,
             defineClassName: defineClassName,
             login: login,
             removeStudants: removeStudants,
@@ -610,19 +622,9 @@
 
         function checkAvailability(username) {
             return $http.get(variables.urlApi + '/users/checkAvailability/' + username);
-        };
+        }
 
         function create(data) {
-            return $http.post(variables.urlApi + '/users', data);
-        };
-
-        
-
-        function editStudants(studants){
-            var data = {
-                action: 'editStudants',
-                studants: studants
-            };
             return $http.post(variables.urlApi + '/users', data);
         }
 
@@ -634,7 +636,7 @@
 
         function login(data) {
             return $http.post(variables.urlApi + '/login', data);
-        };
+        }
 
         function removeStudants(studants){
             var data = {
@@ -649,8 +651,7 @@
             data.action = "sweep";
             data.studants = studants;
             return $http.post(variables.urlApi + '/users', data);
-        };
-
+        }
 
     }
 })();

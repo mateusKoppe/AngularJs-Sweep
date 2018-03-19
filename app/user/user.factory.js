@@ -9,7 +9,6 @@
         var service = {
             checkAvailability: checkAvailability,
             create: create,
-            editStudants: editStudants,
             defineClassName: defineClassName,
             login: login,
             removeStudants: removeStudants,
@@ -19,19 +18,9 @@
 
         function checkAvailability(username) {
             return $http.get(variables.urlApi + '/users/checkAvailability/' + username);
-        };
+        }
 
         function create(data) {
-            return $http.post(variables.urlApi + '/users', data);
-        };
-
-        
-
-        function editStudants(studants){
-            var data = {
-                action: 'editStudants',
-                studants: studants
-            };
             return $http.post(variables.urlApi + '/users', data);
         }
 
@@ -43,7 +32,7 @@
 
         function login(data) {
             return $http.post(variables.urlApi + '/login', data);
-        };
+        }
 
         function removeStudants(studants){
             var data = {
@@ -58,8 +47,7 @@
             data.action = "sweep";
             data.studants = studants;
             return $http.post(variables.urlApi + '/users', data);
-        };
-
+        }
 
     }
 })();

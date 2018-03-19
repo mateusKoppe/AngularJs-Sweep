@@ -77,49 +77,27 @@
         /* Publics */
         function editStudantDialog($event, studants, callback) {
             var body = angular.element(document.body);
+            studants = convertSelectsStudants(studants);
             $mdDialog.show({
                 parent: body,
                 targetEvent: $event,
-                templateUrl: 'app/class/edit-studant-dialog.html',
+                templateUrl: 'app/class/dialogs/edit-studant.html',
                 locals: {
-                    editStudants: angular.copy(studants),
+                    studants: angular.copy(studants),
                     callback: callback
                 },
-                controller: EditStudantDialogController,
+                controller: 'EditStudantController',
                 controllerAs: 'vm'
             });
-
-            function EditStudantDialogController(editStudants, callback, $mdDialog, userFactory) {
-                var vm = this;
-                vm.close = close;
-                vm.editStudants = editStudants;
-                vm.callbackEditStudant = callback;
-                vm.studants = angular.copy(convertSelectsStudants(studants));
-
-                function close() {
-                    $mdDialog.hide();
-                }
-
-                function editStudants(editStudants, callback) {
-
-                    userFactory.editStudants(editStudants).then(function (result) {
-                        callback(editStudants);
-                    });
-                }
-
-            }
-
         }
 
         /* Publics */
         function editStudants(studants) {
-            vm.studants = vm.studants.map(function (studant) {
-                studants.forEach(function (editStudant) {
-                    if (editStudant.id == studant.id) {
-                        studant = editStudant;
-                    }
+            studants.forEach(function (editStudant) {
+                var studantIndex = vm.studants.findIndex(function(studant) {
+                    return studant.id === editStudant.id;
                 });
-                return studant;
+                vm.studants[studantIndex] = editStudant;
             });
             $mdDialog.hide();
         }
@@ -153,7 +131,7 @@
                     vm.studants = orderStudants(vm.studants);
                 });
             });
-        };
+        }
 
         function removeStudant(studants) {
             var studantsSelects = convertSelectsStudants(studants);
