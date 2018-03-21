@@ -79,7 +79,7 @@
                             <p><strong>Alunos</strong></p>
                             <p class="text-right"><strong>Varreu</strong></p>
                         </md-list-item>
-                        <md-list-item ng-repeat="studant in vm.studants track by studant.id | filter: vm.searchStudant" ng-init="vm.selectedStudantes = {}">
+                        <md-list-item ng-repeat="studant in vm.studants | filter:vm.searchStudant track by studant.id ">
                             <md-checkbox ng-model="vm.selectedStudantes[$index]"></md-checkbox>
                             <p flex="75">{{studant.name}}</p>
                             <p flex="25" class="text-right">{{studant.times}}</p>
