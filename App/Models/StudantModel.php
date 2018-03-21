@@ -69,6 +69,19 @@ class StudantModel
         return $sth->execute();
     }
 
+    public function destroy()
+    {
+        $sql = "
+            DELETE FROM " . SELF::$dbTable . "
+            WHERE user_id = :class AND studant_id = :id
+        ";
+        $conn = Database::createConnection();
+        $sth = $conn->prepare($sql);
+        $sth->bindParam(':id', $this->id);
+        $sth->bindParam(':class', $this->class);
+        return $sth->execute();
+    }
+
     public function getContentData()
     {
         return [

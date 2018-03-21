@@ -60,19 +60,16 @@ class StudantController extends Controller
         $this->json($studants_success, 200);
     }
 
-    public function remove()
+    public function delete($params)
     {
-        $studants = $data->studants;
-        $sql = "DELETE FROM studants WHERE ";
-        $i = 0;
-        print_r($studants);
-        foreach($studants as $studant){
-            $sql .= " studant_id = $studant->id";
-            if(++$i != sizeof($studants)){
-                $sql .= " or";
-            }
+        $studant = new StudantModel();
+        $studant->id = $params["id"];
+        $studant->class = $params["class"];
+        if($studant->destroy()){
+          $this->json(['id' => $params["id"]], 200);
+        } else {
+          $this->status(409);
         }
-        echo $conn->query($sql)->rowCount() == 0;
     }
 
     public function sweep()
