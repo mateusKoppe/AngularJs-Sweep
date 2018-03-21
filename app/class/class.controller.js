@@ -135,12 +135,17 @@
 
         function removeStudant(studants) {
             var studantsSelects = convertSelectsStudants(studants);
-            userFactory.removeStudants(studantsSelects).then(function () {
-                vm.studants = vm.studants.filter(function (studant) {
-                    angular.copy({}, studants);
-                    return studantsSelects.indexOf(studant) == -1;
+            vm.selectedStudantes = [];
+            var promises = studantsFactory.removeStudants(studantsSelects)
+            promises.forEach(function(promise) {
+                promise.then(function(result) {
+                    var id = result.data.id
+                    var index = vm.studants.findIndex(function(studant) {
+                        return studant.id == id;
+                    })
+                    vm.studants.splice(index, 1);
                 });
-            });
+            })
         }
 
         function someoneStudant(studants) {

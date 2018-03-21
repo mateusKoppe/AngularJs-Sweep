@@ -181,12 +181,17 @@
 
         function removeStudant(studants) {
             var studantsSelects = convertSelectsStudants(studants);
-            userFactory.removeStudants(studantsSelects).then(function () {
-                vm.studants = vm.studants.filter(function (studant) {
-                    angular.copy({}, studants);
-                    return studantsSelects.indexOf(studant) == -1;
+            vm.selectedStudantes = [];
+            var promises = studantsFactory.removeStudants(studantsSelects)
+            promises.forEach(function(promise) {
+                promise.then(function(result) {
+                    var id = result.data.id
+                    var index = vm.studants.findIndex(function(studant) {
+                        return studant.id == id;
+                    })
+                    vm.studants.splice(index, 1);
                 });
-            });
+            })
         }
 
         function someoneStudant(studants) {
@@ -499,25 +504,38 @@
         var service = {
             create: create,
             editStudants: editStudants,
-            getStudantsByClass: getStudantsByClass
+            getStudantsByClass: getStudantsByClass,
+            removeStudants: removeStudants 
         };
         return service;
 
         function create(data){
-            var url = variables.urlApi + "/class/" + classFactory.getActualClass().class_id + "/studants";
+            var classId = classFactory.getActualClass().class_id;
+            var url = variables.urlApi + "/class/" + classId + "/studants";
             return $http.post(url, data);
         }
 
         function editStudants(studants){
+            var classId = classFactory.getActualClass().class_id;
             var data = {studants: studants};
-            var url = variables.urlApi + "/class/" + classFactory.getActualClass().class_id + "/studants";
+            var url = variables.urlApi + "/class/" + classId + "/studants";
             return $http.put(url, data);
         }
 
         function getStudantsByClass(classData){
-            var url = variables.urlApi + "/class/" + classData.class_id + "/studants";
+            var classId = classFactory.getActualClass().class_id;
+            var url = variables.urlApi + "/class/" + classId + "/studants";
             return $http.get(url);
         }
+
+        function removeStudants(studants){
+            var classId = classFactory.getActualClass().class_id;
+            return studants.map(function(studant) {
+                var url = variables.urlApi + "/class/" + classId + "/studants/" + studant.id;
+                return $http.delete(url);
+            });
+        }
+
     }
 })();
 
@@ -615,7 +633,6 @@
             create: create,
             defineClassName: defineClassName,
             login: login,
-            removeStudants: removeStudants,
             sweep: sweep
         }
         return service;
@@ -636,14 +653,6 @@
 
         function login(data) {
             return $http.post(variables.urlApi + '/login', data);
-        }
-
-        function removeStudants(studants){
-            var data = {
-                studants: studants,
-                action: "removeStudant"
-            };
-            return $http.post(variables.urlApi + '/users', data);
         }
 
         function sweep(studants) {
