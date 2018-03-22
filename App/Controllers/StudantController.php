@@ -20,11 +20,13 @@ class StudantController extends Controller
 
     }
 
-    public function show($params) {
+    public function show($params)
+    {
         echo $params['id'];
     }
 
-    public function list($params) {
+    public function list($params)
+    {
         $class_id = $params['class'];
         $studants = StudantModel::listByClassId($class_id);
         if($studants === false){
