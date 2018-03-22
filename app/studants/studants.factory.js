@@ -10,7 +10,8 @@
             create: create,
             editStudants: editStudants,
             getStudantsByClass: getStudantsByClass,
-            removeStudants: removeStudants 
+            removeStudants: removeStudants,
+            sweep: sweep
         };
         return service;
 
@@ -39,6 +40,18 @@
                 var url = variables.urlApi + "/class/" + classId + "/studants/" + studant.id;
                 return $http.delete(url);
             });
+        }
+
+        function sweep(studants){
+            var sweepers = angular.copy(studants);
+            sweepers = sweepers.map(function(studant){
+                studant.times = (+studant.times) + 1;
+                return studant;
+            });
+            return editStudants(sweepers)
+                .then(function(response){
+                    return response.data;
+                });
         }
 
     }

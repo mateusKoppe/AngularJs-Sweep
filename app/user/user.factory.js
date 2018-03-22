@@ -10,8 +10,7 @@
             checkAvailability: checkAvailability,
             create: create,
             defineClassName: defineClassName,
-            login: login,
-            sweep: sweep
+            login: login
         }
         return service;
 
@@ -31,13 +30,6 @@
 
         function login(data) {
             return $http.post(variables.urlApi + '/login', data);
-        }
-
-        function sweep(studants) {
-            var data = {};
-            data.action = "sweep";
-            data.studants = studants;
-            return $http.post(variables.urlApi + '/users', data);
         }
 
     }

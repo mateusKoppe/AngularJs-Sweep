@@ -154,16 +154,17 @@
         }
 
         function sweep(studants) {
-            userFactory.sweep(studants);
             studants = objectToArray(studants);
-            vm.studants = vm.studants.map(function (studant) {
-                if (studants.indexOf(studant) != -1) {
-                    studant.times++;
-                    return studant;
-                }
-                return studant;
-            });
-            vm.studants = orderStudants(vm.studants);
+            studantsFactory.sweep(studants)
+                .then(function(studantsEditeds){
+                    studantsEditeds.forEach(function (editStudant) {
+                        var studantIndex = vm.studants.findIndex(function(studant) {
+                            return studant.id === editStudant.id;
+                        });
+                        vm.studants[studantIndex] = editStudant;
+                    });
+                    vm.studants = orderStudants(vm.studants);
+                });
         }
 
         function toggleSelecteds(studants, selected) {

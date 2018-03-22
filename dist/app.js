@@ -200,16 +200,17 @@
         }
 
         function sweep(studants) {
-            userFactory.sweep(studants);
             studants = objectToArray(studants);
-            vm.studants = vm.studants.map(function (studant) {
-                if (studants.indexOf(studant) != -1) {
-                    studant.times++;
-                    return studant;
-                }
-                return studant;
-            });
-            vm.studants = orderStudants(vm.studants);
+            studantsFactory.sweep(studants)
+                .then(function(studantsEditeds){
+                    studantsEditeds.forEach(function (editStudant) {
+                        var studantIndex = vm.studants.findIndex(function(studant) {
+                            return studant.id === editStudant.id;
+                        });
+                        vm.studants[studantIndex] = editStudant;
+                    });
+                    vm.studants = orderStudants(vm.studants);
+                });
         }
 
         function toggleSelecteds(studants, selected) {
@@ -505,7 +506,8 @@
             create: create,
             editStudants: editStudants,
             getStudantsByClass: getStudantsByClass,
-            removeStudants: removeStudants 
+            removeStudants: removeStudants,
+            sweep: sweep
         };
         return service;
 
@@ -534,6 +536,18 @@
                 var url = variables.urlApi + "/class/" + classId + "/studants/" + studant.id;
                 return $http.delete(url);
             });
+        }
+
+        function sweep(studants){
+            var sweepers = angular.copy(studants);
+            sweepers = sweepers.map(function(studant){
+                studant.times = (+studant.times) + 1;
+                return studant;
+            });
+            return editStudants(sweepers)
+                .then(function(response){
+                    return response.data;
+                });
         }
 
     }
@@ -632,8 +646,7 @@
             checkAvailability: checkAvailability,
             create: create,
             defineClassName: defineClassName,
-            login: login,
-            sweep: sweep
+            login: login
         }
         return service;
 
@@ -653,13 +666,6 @@
 
         function login(data) {
             return $http.post(variables.urlApi + '/login', data);
-        }
-
-        function sweep(studants) {
-            var data = {};
-            data.action = "sweep";
-            data.studants = studants;
-            return $http.post(variables.urlApi + '/users', data);
         }
 
     }
