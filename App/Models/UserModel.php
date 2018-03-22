@@ -26,15 +26,16 @@ class UserModel
     {
         $sql = "
             INSERT INTO " . SELF::$dbTable . "
-            (user_username, user_password, user_class)
+            (user_username, user_password, user_class, user_token)
             VALUES
-            (:username, :password, :className)
+            (:username, :password, :className, :token)
         ";
         $conn = Database::createConnection();
         $sth = $conn->prepare($sql);
         $sth->bindParam(':username', $this->username);
         $sth->bindParam(':password', $this->password);
         $sth->bindParam(':className', $this->className);
+        $sth->bindParam(':token', $this->generateToken());
         $success = $sth->execute();
         if($success){
             $this->id = $conn->lastInsertId();
@@ -68,5 +69,10 @@ class UserModel
             'user_id' => $this->id,
             'user_username' => $this->username,
         ];
+    }
+
+    private function generateToken()
+    {
+        return strval(bin2hex(openssl_random_pseudo_bytes(32)));
     }
 }

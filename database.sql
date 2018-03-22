@@ -4,7 +4,8 @@ CREATE TABLE users (
   user_id int(11) PRIMARY KEY AUTO_INCREMENT,
   user_username varchar(50) UNIQUE NOT NULL,
   user_password varchar(20) NOT NULL,
-  user_class varchar(60) DEFAULT NULL
+  user_class varchar(60) DEFAULT NULL,
+  user_token varchar(64) DEFAULT NULL
 );
 
 CREATE TABLE studants (
