@@ -25,11 +25,6 @@ class StudantController extends Controller
         }
     }
 
-    public function show($params)
-    {
-        echo $params['id'];
-    }
-
     public function list($params)
     {
         $user = Auth::requireLogin();
@@ -92,21 +87,4 @@ class StudantController extends Controller
         }
     }
 
-    public function sweep()
-    {
-        $studants = $data->studants;
-        $sql = "UPDATE studants SET studant_times = studant_times + 1 WHERE ";
-        $i = 0;
-        foreach ($studants as $studant){
-            $stutandsArray[++$i] = filterValue($studant->id);
-        }
-        $i = 0;
-        foreach($stutandsArray as $studant){
-            $sql .= " studant_id = $studant";
-            if(++$i != sizeof($stutandsArray)){
-                $sql .= " or";
-            }
-        }
-        echo $conn->query($sql)->rowCount() == 0;
-    }
 }
