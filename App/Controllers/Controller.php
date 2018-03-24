@@ -9,6 +9,7 @@ class Controller
     function __construct()
     {
         $this->body = json_decode(file_get_contents('php://input'));
+        $this->query = (object) $_GET;
     }
 
     protected function json($data, $status = 200)

@@ -7,7 +7,7 @@ server {
   fastcgi_read_timeout 1800;
 
   location / {
-    try_files $uri $uri/ /index.php$is_args$args;
+    try_files $uri $uri/ /index.php?$query_string;
   }
 
   location ~* \.(js|css|png|jpg|jpeg|gif|ico)$ {
