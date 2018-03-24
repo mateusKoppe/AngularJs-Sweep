@@ -5,7 +5,7 @@
         .module('app.studants')
         .service('studantsFactory', studantsFactory);
 
-    function studantsFactory($http, variables, classFactory) {
+    function studantsFactory($http, variables, classFactory, loginFactory) {
         var service = {
             create: create,
             editStudants: editStudants,
@@ -17,27 +17,32 @@
 
         function create(data){
             var classId = classFactory.getActualClass().class_id;
-            var url = variables.urlApi + "/class/" + classId + "/studants";
+            var token = loginFactory.getUser().user_token;
+            var url = variables.urlApi + "/class/" + classId + "/studants?token=" + token;
             return $http.post(url, data);
         }
 
         function editStudants(studants){
             var classId = classFactory.getActualClass().class_id;
+            var token = loginFactory.getUser().user_token;
             var data = {studants: studants};
-            var url = variables.urlApi + "/class/" + classId + "/studants";
+            var url = variables.urlApi + "/class/" + classId + "/studants?token=" + token;
             return $http.put(url, data);
         }
 
         function getStudantsByClass(classData){
             var classId = classFactory.getActualClass().class_id;
-            var url = variables.urlApi + "/class/" + classId + "/studants";
+            var token = loginFactory.getUser().user_token;
+            var url = variables.urlApi + "/class/" + classId + "/studants?token=" + token;
             return $http.get(url);
         }
 
         function removeStudants(studants){
             var classId = classFactory.getActualClass().class_id;
+            var token = loginFactory.getUser().user_token;
             return studants.map(function(studant) {
                 var url = variables.urlApi + "/class/" + classId + "/studants/" + studant.id;
+                url += "?token=" + token;
                 return $http.delete(url);
             });
         }
