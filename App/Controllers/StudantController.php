@@ -3,21 +3,26 @@
 namespace App\Controllers;
 
 use App\Models\StudantModel;
+use App\Services\Auth;
 
 class StudantController extends Controller
 {
     public function create($params)
     {
+        $user = Auth::requireLogin();
+        $class_id = $params['class'];
+        if($user->id !== $class_id) {
+            Auth::unautorized();
+        }
         $studant = new StudantModel();
         $studant->name = $this->body->name;
-        $studant->class = $params['class'];
+        $studant->class = $class_id;
         $success = $studant->save();
         if($success){
             $this->json($studant->getContentData(), 201);
         } else {
             $this->json(null, 400);
         }
-
     }
 
     public function show($params)
