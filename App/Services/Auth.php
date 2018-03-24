@@ -11,7 +11,7 @@ class Auth
         $token = $_GET['token'];
         $user = false;
         if($token) {
-            $user = UserModel::userByToken();
+            $user = UserModel::userByToken($token);
         }
         if($user) {
             return $user;
