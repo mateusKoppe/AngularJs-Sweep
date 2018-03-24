@@ -32,7 +32,11 @@ class StudantController extends Controller
 
     public function list($params)
     {
+        $user = Auth::requireLogin();
         $class_id = $params['class'];
+        if($user->id !== $class_id) {
+            Auth::unautorized();
+        }
         $studants = StudantModel::listByClassId($class_id);
         if($studants === false){
             $this->json([
@@ -45,8 +49,12 @@ class StudantController extends Controller
 
     public function updateMultiple($params)
     {
-        $body_studants = $this->body->studants;
+        $user = Auth::requireLogin();
         $class_id = $params['class'];
+        if($user->id !== $class_id) {
+            Auth::unautorized();
+        }
+        $body_studants = $this->body->studants;
         $studants_success = [];
         foreach($body_studants as $studant_data) {
             $studant = new StudantModel();
@@ -69,9 +77,14 @@ class StudantController extends Controller
 
     public function delete($params)
     {
+        $user = Auth::requireLogin();
+        $class_id = $params['class'];
+        if($user->id !== $class_id) {
+            Auth::unautorized();
+        }
         $studant = new StudantModel();
         $studant->id = $params["id"];
-        $studant->class = $params["class"];
+        $studant->class = $class_id;
         if($studant->destroy()){
           $this->json(['id' => $params["id"]], 200);
         } else {
