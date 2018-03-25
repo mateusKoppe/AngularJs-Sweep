@@ -5,13 +5,13 @@
         .module('app.class')
         .controller('FirstTimeController', FirstTimeController);
 
-    function FirstTimeController($state, loginFactory, classFactory) {
+    function FirstTimeController($state, userFactory, classFactory) {
         var vm = this;
         vm.setClass = setClass;
         vm.class = {};
 
         vm.$onInit = function(){
-            classFactory.getClassByUser(loginFactory.getUser())
+            classFactory.getClassByUser(userFactory.getUser())
                 .then(function(response) {
                     vm.class = response.data;
                 });

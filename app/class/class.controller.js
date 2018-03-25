@@ -8,7 +8,6 @@
     function ClassController(
             $state,
             $mdDialog,
-            loginFactory,
             userFactory,
             orderByFilter,
             classFactory,
@@ -34,11 +33,10 @@
 
         /* Private */
         function loadStudants() {
-            studantsFactory.getStudantsByClass(classFactory.getActualClass())
+            studantsFactory.getStudantsByClass()
                 .then(function(request){
                     vm.studants = request.data;
                 });
-
         }
 
         function exit() {
@@ -118,7 +116,7 @@
 
             $mdDialog.show(confirm).then(function (result) {
                 var data = {
-                    class: loginFactory.getUser().user_id,
+                    class: userFactory.getUser().user_id,
                     name: result
                 };
                 studantsFactory.create(data).then(function (result) {

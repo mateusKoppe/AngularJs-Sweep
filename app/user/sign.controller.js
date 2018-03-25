@@ -5,7 +5,7 @@
         .module('app.user')
         .controller('SignController', SignController);
 
-    function SignController($rootScope, $scope, userFactory, loginFactory){
+    function SignController($rootScope, $scope, userFactory){
         var vm = this;
         vm.create = create;
         vm.login = login;
@@ -26,20 +26,18 @@
         function login(user, form, success, error){
             var userData = angular.copy(user);
             angular.copy({}, user)
-            userFactory.login(userData).then(function(result){
-                if(result.data){
+            userFactory.login(userData)
+                .then(user => {
                     if($scope[form]){
                         $scope[form].$setUntouched();
                         $scope[form].$setPristine();
                     }
-                    loginFactory.setUser(result.data);
-                    success(result.data);
-                }
-            });
+                    success(user);
+                });
         }
 
         function logout(callback){
-            loginFactory.cleanUser();
+            userFactory.cleanUser();
             callback();
         }
     }

@@ -16,6 +16,7 @@
         return service;
 
         function getClassByUser(user) {
+            console.log(user)
             return $http.get(variables.urlApi + '/classByUser/' + user.user_id)
                 .then(function(response) {
                     setActualClass(response.data);

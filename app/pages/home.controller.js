@@ -5,7 +5,7 @@
         .module('app')
         .controller('homeController', homeController);
 
-    function homeController($state, loginFactory, userFactory){
+    function homeController($state, userFactory){
         var vm = this;
 
         //Variables
@@ -29,10 +29,9 @@
         }
 
         function userCreated(user){
-            loginFactory.setUser(user);
             $state.go('firstTime');
         }
-
+        
         function userLogged(){
             $state.go("class");
         }

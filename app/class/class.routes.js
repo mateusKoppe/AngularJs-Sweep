@@ -13,21 +13,21 @@
                     controller: 'ClassController',
                     controllerAs: 'vm',
                     resolve: {
-                        userRoute: function($state, loginFactory, $q){
-                            if(!loginFactory.getUser()) $state.go('home');
-                            return loginFactory.getUser();
-                        },
-                        classRoute: function($state, classFactory, loginFactory){
-                            if(classFactory.getActualClass()){
-                                return classFactory.getActualClass();
-                            }
-                            return classFactory.getClassByUser(loginFactory.getUser())
+                        userRoute: function($state, userFactory, classFactory){
+                            return userFactory.loadUser()
+                                .then(user => {
+                                    let actualClass = classFactory.getActualClass();
+                                    return classFactory.getClassByUser(user)
+                                })
                                 .then(response => {
                                     if(!response.data.class_name){
                                         $state.go('firstTime');
                                     }
                                     return response.data;
-                                });
+                                })
+                                .catch(() => {
+                                    $state.go('home')
+                                })
                         }
                     }
                 })
@@ -37,13 +37,13 @@
                     controller: 'FirstTimeController',
                     controllerAs: 'vm',
                     resolve: {
-                        userRoute: function($state, loginFactory, $q, $timeout){
-                            if(!loginFactory.getUser()) {
+                        userRoute: function($state, userFactory, $q, $timeout){
+                            if(!userFactory.getUser()) {
                                 $timeout(function(){
                                     $state.go('home');
                                 });
                             } else {
-                                return loginFactory.getUser();
+                                return userFactory.getUser();
                             }
                         }
                     }
