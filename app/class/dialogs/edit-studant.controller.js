@@ -1,27 +1,23 @@
 (function () {
-    'use strict';
+  angular
+    .module("app.class")
+    .controller("EditStudantController", EditStudantController);
 
-    angular
-        .module('app.class')
-        .controller('EditStudantController', EditStudantController);
+  function EditStudantController(studants, callback, $mdDialog, studantsFactory) {
+    const vm = this;
+    vm.close = close;
+    vm.editStudants = editStudants;
+    vm.callbackEditStudant = callback;
+    vm.studants = studants;
 
-    function EditStudantController(studants, callback, $mdDialog, studantsFactory) {
-        var vm = this;
-        vm.close = close;
-        vm.editStudants = editStudants;
-        vm.callbackEditStudant = callback;
-        vm.studants = studants;
-
-        function close() {
-            $mdDialog.hide();
-        }
-
-        function editStudants(editStudants, callback) {
-            studantsFactory.editStudants(editStudants).then(function(result) {
-                callback(result.data);
-            });
-        }
-
+    function close() {
+      $mdDialog.hide();
     }
 
-})();
+    function editStudants(selectedStudants, editCallback) {
+      studantsFactory.editStudants(selectedStudants).then((result) => {
+        editCallback(result.data);
+      });
+    }
+  }
+}());

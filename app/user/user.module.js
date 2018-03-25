@@ -1,8 +1,6 @@
-(function(){
-    'use strict';
-    
-    angular
-        .module('app.user', [
-            'ui.router'
-        ])
-})();
+(function () {
+  angular
+    .module("app.user", [
+      "ui.router",
+    ]);
+}());

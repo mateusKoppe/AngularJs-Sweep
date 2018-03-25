@@ -1,25 +1,23 @@
 (function () {
-    'use strict';
+  angular
+    .module("app")
+    .directive("passwordCheck", passwordCheck);
 
-    angular
-        .module('app')
-        .directive('passwordCheck', passwordCheck);
+  function passwordCheck() {
+    const directive = {
+      require: "ngModel",
+      link,
+      restrict: "A",
+      scope: {
+        passwordCheck: "=passwordCheck",
+      },
+    };
+    return directive;
 
-    function passwordCheck() {
-        var directive = {
-            require: 'ngModel',
-            link: link,
-            restrict: 'A',
-            scope: {
-                passwordCheck: "=passwordCheck"
-            },
-        };
-        return directive;
-
-        function link(scope, element, attrs, controller) {
-            controller.$validators.passwordCheck = function (modelValue, viewValue) {
-                return scope.passwordCheck === modelValue;
-            }
-        }
+    function link(scope, element, attrs, controller) {
+      controller.$validators.passwordCheck = function (modelValue) {
+        return scope.passwordCheck === modelValue;
+      };
     }
-})();
+  }
+}());

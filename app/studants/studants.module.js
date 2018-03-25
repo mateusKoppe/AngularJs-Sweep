@@ -1,8 +1,6 @@
-(function(){
-    'use strict';
-    angular
-        .module('app.studants', [
-            'ui.router'
-        ])
-
-})();
+(function () {
+  angular
+    .module("app.studants", [
+      "ui.router",
+    ]);
+}());

@@ -1,20 +1,19 @@
-(function(){
-    'use strick';
+(function () {
+  "use strick";
 
-    angular
-        .module('app')
-        .config(routes)
+  angular
+    .module("app")
+    .config(routes);
 
-    function routes ($locationProvider, $stateProvider, $urlRouterProvider) {
-        $stateProvider
-            .state({
-                name: 'home',
-                url: '/',
-                controller: "homeController",
-                controllerAs: "homeVm",
-                templateUrl: "app/pages/home.html"
-            });
-        $urlRouterProvider.otherwise('/');
-    }
-
-})();
+  function routes($locationProvider, $stateProvider, $urlRouterProvider) {
+    $stateProvider
+      .state({
+        name: "home",
+        url: "/",
+        controller: "homeController",
+        controllerAs: "homeVm",
+        templateUrl: "app/pages/home.html",
+      });
+    $urlRouterProvider.otherwise("/");
+  }
+}());

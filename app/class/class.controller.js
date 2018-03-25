@@ -1,181 +1,175 @@
 (function () {
-    'use strict';
+  angular
+    .module("app.class")
+    .controller("ClassController", ClassController);
 
-    angular
-        .module('app.class')
-        .controller('ClassController', ClassController);
+  function ClassController(
+    $state,
+    $mdDialog,
+    userFactory,
+    orderByFilter,
+    classFactory,
+    studantsFactory,
+  ) {
+    const vm = this;
+    vm.editStudants = editStudants;
+    vm.editStudantDialog = editStudantDialog;
+    vm.exit = exit;
+    vm.newStudantDialog = newStudantDialog;
+    vm.notSelected = notSelected;
+    vm.removeStudant = removeStudant;
+    vm.someoneStudant = someoneStudant;
+    vm.sweep = sweep;
+    vm.toggleSelecteds = toggleSelecteds;
+    vm.className = "";
+    vm.studants = [];
 
-    function ClassController(
-            $state,
-            $mdDialog,
-            userFactory,
-            orderByFilter,
-            classFactory,
-            studantsFactory
-        ) {
-        var vm = this;
-        vm.editStudants = editStudants;
-        vm.editStudantDialog = editStudantDialog;
-        vm.exit = exit;
-        vm.newStudantDialog = newStudantDialog;
-        vm.notSelected = notSelected;
-        vm.removeStudant = removeStudant;
-        vm.someoneStudant = someoneStudant;
-        vm.sweep = sweep;
-        vm.toggleSelecteds = toggleSelecteds;
-        vm.className = "";
-        vm.studants = [];
+    vm.$onInit = () => {
+      vm.className = classFactory.getActualClass().class_name;
+      loadStudants();
+    };
 
-        vm.$onInit = function () {
-            vm.className = classFactory.getActualClass().class_name;
-            loadStudants();
-        }
-
-        /* Private */
-        function loadStudants() {
-            studantsFactory.getStudantsByClass()
-                .then(function(request){
-                    vm.studants = request.data;
-                });
-        }
-
-        function exit() {
-            $state.go('home');
-        }
-
-        function convertSelectsStudants(selecteds) {
-            var studantsKeys = [];
-            for (var key in selecteds) {
-                if (selecteds[key]) {
-                    studantsKeys.push(new Number(key));
-                }
-            }
-            var studantsSelects = [];
-            for (var key in studantsKeys) {
-                studantsSelects.push(vm.studants[studantsKeys[key]]);
-            }
-            return studantsSelects;
-        }
-
-        function orderStudants(studants) {
-            studants = angular.forEach(studants, function (studant) {
-                studant.times = +studant.times;
-            });
-            return orderByFilter(studants, ['times', 'name']);
-        }
-
-        function objectToArray(object) {
-            var array = [];
-            angular.forEach(object, function (item) {
-                array.push(item);
-            });
-            return array;
-        }
-
-        /* Publics */
-        function editStudantDialog($event, studants, callback) {
-            var body = angular.element(document.body);
-            studants = convertSelectsStudants(studants);
-            $mdDialog.show({
-                parent: body,
-                targetEvent: $event,
-                templateUrl: 'app/class/dialogs/edit-studant.html',
-                locals: {
-                    studants: angular.copy(studants),
-                    callback: callback
-                },
-                controller: 'EditStudantController',
-                controllerAs: 'vm'
-            });
-        }
-
-        /* Publics */
-        function editStudants(studants) {
-            studants.forEach(function (editStudant) {
-                var studantIndex = vm.studants.findIndex(function(studant) {
-                    return studant.id === editStudant.id;
-                });
-                vm.studants[studantIndex] = editStudant;
-            });
-            $mdDialog.hide();
-        }
-
-        function notSelected(swepper, value) {
-            return swepper != value;
-        }
-
-        function newStudantDialog(event) {
-            var confirm = $mdDialog.prompt()
-                .title('Cadastro')
-                .textContent('Preencha o campo abaixo para cadastrar um aluno.')
-                .placeholder('Aluno')
-                .ariaLabel('Aluno')
-                .targetEvent(event)
-                .ok('Adicionar')
-                .cancel('Cancelar');
-
-            $mdDialog.show(confirm).then(function (result) {
-                var data = {
-                    class: userFactory.getUser().user_id,
-                    name: result
-                };
-                studantsFactory.create(data).then(function (result) {
-                    var studant = result.data;
-                    vm.studants.push({
-                        id: studant.studant_id,
-                        name: studant.studant_name,
-                        times: studant.studant_times,
-                    });
-                    vm.studants = orderStudants(vm.studants);
-                });
-            });
-        }
-
-        function removeStudant(studants) {
-            var studantsSelects = convertSelectsStudants(studants);
-            vm.selectedStudantes = [];
-            var promises = studantsFactory.removeStudants(studantsSelects)
-            promises.forEach(function(promise) {
-                promise.then(function(result) {
-                    var id = result.data.id
-                    var index = vm.studants.findIndex(function(studant) {
-                        return studant.id == id;
-                    })
-                    vm.studants.splice(index, 1);
-                });
-            })
-        }
-
-        function someoneStudant(studants) {
-            studants = objectToArray(studants);
-            return studants && studants.indexOf(true) != -1;
-        }
-
-        function sweep(studants) {
-            studants = objectToArray(studants);
-            studantsFactory.sweep(studants)
-                .then(function(studantsEditeds){
-                    studantsEditeds.forEach(function (editStudant) {
-                        var studantIndex = vm.studants.findIndex(function(studant) {
-                            return studant.id === editStudant.id;
-                        });
-                        vm.studants[studantIndex] = editStudant;
-                    });
-                    vm.studants = orderStudants(vm.studants);
-                });
-        }
-
-        function toggleSelecteds(studants, selected) {
-            if (selected) {
-                angular.copy({}, studants);
-            } else {
-                var i = 0;
-                var newSelect = {};
-                angular.forEach(vm.studants, function (studant) {
-                    newSelect[i++] = true;
-                });
-                angular.copy(newSelect, studants);
-            }
-        }
+    /* Private */
+    function loadStudants() {
+      studantsFactory.getStudantsByClass()
+        .then((request) => {
+          vm.studants = request.data;
+        });
     }
-})();
+
+    function exit() {
+      $state.go("home");
+    }
+
+    function convertSelectsStudants(selecteds) {
+      const studantsKeys = [];
+      for (const key in selecteds) {
+        if (selecteds[key]) {
+          studantsKeys.push(+key);
+        }
+      }
+      const studantsSelects = [];
+      for (const key in studantsKeys) {
+        if (vm.studants[studantsKeys[key]]) {
+          studantsSelects.push(vm.studants[studantsKeys[key]]);
+        }
+      }
+      return studantsSelects;
+    }
+
+    function orderStudants(studants) {
+      const editedStudants = angular.forEach(studants, (studant) => {
+        studant.times = +studant.times;
+      });
+      return orderByFilter(editedStudants, ["times", "name"]);
+    }
+
+    function objectToArray(object) {
+      const array = [];
+      angular.forEach(object, (item) => {
+        array.push(item);
+      });
+      return array;
+    }
+
+    /* Publics */
+    function editStudantDialog($event, studants, callback) {
+      const body = angular.element(document.body);
+      const covnertedStudants = convertSelectsStudants(studants);
+      $mdDialog.show({
+        parent: body,
+        targetEvent: $event,
+        templateUrl: "app/class/dialogs/edit-studant.html",
+        locals: {
+          studants: angular.copy(covnertedStudants),
+          callback,
+        },
+        controller: "EditStudantController",
+        controllerAs: "vm",
+      });
+    }
+
+    /* Publics */
+    function editStudants(studants) {
+      studants.forEach((editStudant) => {
+        const studantIndex = vm.studants.findIndex(studant => studant.id === editStudant.id);
+        vm.studants[studantIndex] = editStudant;
+      });
+      $mdDialog.hide();
+    }
+
+    function notSelected(swepper, value) {
+      return swepper !== value;
+    }
+
+    function newStudantDialog(event) {
+      const confirm = $mdDialog.prompt()
+        .title("Cadastro")
+        .textContent("Preencha o campo abaixo para cadastrar um aluno.")
+        .placeholder("Aluno")
+        .ariaLabel("Aluno")
+        .targetEvent(event)
+        .ok("Adicionar")
+        .cancel("Cancelar");
+
+      $mdDialog.show(confirm)
+        .then(result =>
+          studantsFactory.create({
+            class: userFactory.getUser().user_id,
+            name: result,
+          }))
+        .then((result) => {
+          const studant = result.data;
+          vm.studants.push({
+            id: studant.studant_id,
+            name: studant.studant_name,
+            times: studant.studant_times,
+          });
+          vm.studants = orderStudants(vm.studants);
+        });
+    }
+
+    function removeStudant(studants) {
+      const studantsSelects = convertSelectsStudants(studants);
+      vm.selectedStudantes = [];
+      const promises = studantsFactory.removeStudants(studantsSelects);
+      promises.forEach((promise) => {
+        promise.then((result) => {
+          const { id } = result.data;
+          const index = vm.studants.findIndex(studant => +studant.id === +id);
+          vm.studants.splice(index, 1);
+        });
+      });
+    }
+
+    function someoneStudant(studants) {
+      const studantsList = objectToArray(studants);
+      return studantsList && studantsList.indexOf(true) !== -1;
+    }
+
+    function sweep(studants) {
+      const studantsList = objectToArray(studants);
+      studantsFactory.sweep(studantsList)
+        .then((studantsEditeds) => {
+          studantsEditeds.forEach((editStudant) => {
+            const studantIndex = vm.studants.findIndex(studant => studant.id === editStudant.id);
+            vm.studants[studantIndex] = editStudant;
+          });
+          vm.studants = orderStudants(vm.studants);
+        });
+    }
+
+    function toggleSelecteds(studants, selected) {
+      if (selected) {
+        angular.copy({}, studants);
+      } else {
+        let i = 0;
+        const newSelect = {};
+        angular.forEach(vm.studants, () => {
+          newSelect[i++] = true;
+        });
+        angular.copy(newSelect, studants);
+      }
+    }
+  }
+}());
