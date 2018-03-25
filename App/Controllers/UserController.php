@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\UserModel;
+use App\Services\Auth;
 
 class UserController extends Controller
 {
@@ -30,6 +31,12 @@ class UserController extends Controller
         } else {
             $this->json(['message' => 'fail to login'], 403);
         }
+    }
+
+    public function loginByToken()
+    {
+        $user = Auth::requireLogin();
+        $this->json($user->getContentData(), 201);
     }
 
     public function checkAvailability($params)
