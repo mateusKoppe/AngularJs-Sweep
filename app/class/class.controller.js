@@ -147,8 +147,8 @@
       return studantsList && studantsList.indexOf(true) !== -1;
     }
 
-    function sweep(studants) {
-      const studantsList = objectToArray(studants);
+    function sweep() {
+      const studantsList = objectToArray(vm.swepper);
       studantsFactory.sweep(studantsList)
         .then((studantsEditeds) => {
           studantsEditeds.forEach((editStudant) => {
@@ -156,6 +156,7 @@
             vm.studants[studantIndex] = editStudant;
           });
           vm.studants = orderStudants(vm.studants);
+          [vm.swepper[0], vm.swepper[1]] = vm.studants;
         });
     }
 
