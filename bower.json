@@ -1,0 +1,24 @@
+{
+  "name": "sweep",
+  "description": "",
+  "main": "index.js",
+  "authors": [
+    "Koppe <mateus.koppe@gmail.com>"
+  ],
+  "license": "ISC",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "src/libraries/",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "^1.6.2",
+    "angular-material": "^1.1.3",
+    "angular-ui-router": "^0.4.2",
+    "angular-animate": "^1.6.2"
+  }
+}

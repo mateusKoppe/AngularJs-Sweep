@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html ng-app="app">
+    <head>
+        <!-- CSS -->
+        <title>Varrer</title>
+        <base href="/">
+        <meta charset="utf8">
+        <meta name="viewport" content="width = device-width, initial-scale = 1">
+        <!-- build:css vendors.css -->
+        <link rel="stylesheet" href="bower_components/angular-material/angular-material.min.css">
+        <!-- endbuild -->
+        <link rel="stylesheet" href="app.css">
+        <link rel="icon" href="app/assets/image/icon.png">
+    </head>
+    <body>
+
+        <!-- HEADER -->
+        <header class="md-whiteframe-3dp">
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <a href="#!/login/" layout="row" class="logo" flex="10" layout-align="center">
+                        Varrer
+                    </a>
+                    <h2>
+                        <span>Gerenciador de Reponsáveis pela limpeza</span>
+                    </h2>
+                </div>
+            </md-toolbar>
+        </header>
+
+        <!-- MAIN  -->
+        <ui-view></ui-view>
+
+        <!-- build:js vendors.js -->
+        <script src="bower_components/angular/angular.min.js"></script>
+        <script src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
+        <script src="bower_components/angular-animate/angular-animate.min.js"></script>
+        <script src="bower_components/angular-aria/angular-aria.min.js"></script>
+        <script src="bower_components/angular-messages/angular-messages.min.js"></script>
+        <script src="bower_components/angular-material/angular-material.min.js"></script>
+        <!-- endbuild -->
+
+        <script src="app.js"></script>
+    </body>
+</html>
