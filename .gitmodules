@@ -1,6 +1,0 @@
-[submodule "api"]
-	path = api
-	url = https://github.com/mateusKoppe/SweepManager-Api
-[submodule "webApp"]
-	path = webApp
-	url = https://github.com/mateusKoppe/SweepManager-WebApp
