@@ -55,7 +55,6 @@ const inFolder = (folder, selection) => {
       prefix = '!';
       file = file.slice(1);
     }
-    console.log(`${prefix}${folder}/${file}`)
     return `${prefix}${folder}/${file}`;
   }
 }
