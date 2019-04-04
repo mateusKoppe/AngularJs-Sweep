@@ -1,6 +1,6 @@
 USE sweep;
 
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
   user_id int(11) PRIMARY KEY AUTO_INCREMENT,
   user_username varchar(50) UNIQUE NOT NULL,
   user_password varchar(20) NOT NULL,
@@ -8,7 +8,7 @@ CREATE TABLE users (
   user_token varchar(64) DEFAULT NULL
 );
 
-CREATE TABLE studants (
+CREATE TABLE IF NOT EXISTS studants (
   studant_id int(11) PRIMARY KEY AUTO_INCREMENT,
   studant_name varchar(40) NOT NULL,
   studant_times int(11) DEFAULT 0,

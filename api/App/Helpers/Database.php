@@ -6,7 +6,7 @@ use PDO;
 
 class Database
 {
-    public static $HOST = 'mysql';
+    public static $HOST = 'sweep-mysql';
     public static $NAME = 'sweep';
     public static $USER = 'root';
     public static $PASSWORD = 'root';
